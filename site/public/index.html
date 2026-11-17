@@ -1,0 +1,2219 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>RETROMOD. — Mid-Century Modern &amp; Beyond · Norwood, Johannesburg</title>
+  <meta name="description"
+    content="RETROMOD. (@retromod.za) — mid-century modern furniture, art, lighting and vintage Hi-Fi. 66 Grant Avenue, Norwood, Johannesburg. Nationwide shipping.">
+  <meta name="theme-color" content="#FAFAFA">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@100..900&family=Archivo:wdth,wght@62..125,100..900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/site.css">
+  <style>
+    /* ===================== HERO ===================== */
+    .hero-in {
+      display: grid;
+      grid-template-columns: calc(600*var(--u)) 1fr;
+      gap: calc(80*var(--u));
+      padding: calc(28*var(--u)) var(--side) calc(64*var(--u))
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      min-height: calc(760*var(--u))
+    }
+
+    .hero-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: calc(10*var(--u));
+      font: 500 calc(12*var(--u))/1 var(--ui);
+      letter-spacing: .06em
+    }
+
+    .hero-eyebrow span {
+      color: var(--muted)
+    }
+
+    .title-wrap {
+      position: relative;
+      width: max-content;
+      margin-top: calc(44*var(--u))
+    }
+
+    .title {
+      font-family: var(--display);
+      font-stretch: 104%;
+      font-weight: 640;
+      font-size: calc(132*var(--u));
+      line-height: .86;
+      letter-spacing: -.06em
+    }
+
+    .tl-mask {
+      display: block;
+      overflow: hidden;
+      padding-top: .06em;
+      margin-top: -.06em
+    }
+
+    .tl {
+      display: block
+    }
+
+    .year {
+      position: absolute;
+      left: calc(100% + 12*var(--u));
+      top: calc(30*var(--u));
+      font: 500 calc(15*var(--u))/1 var(--ui)
+    }
+
+    .hero-lede {
+      margin-top: calc(30*var(--u));
+      max-width: calc(440*var(--u));
+      font: 500 calc(16.5*var(--u))/1.5 var(--ui);
+      color: var(--muted)
+    }
+
+    .hero-lede b {
+      color: var(--ink);
+      font-weight: 600
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: calc(10*var(--u));
+      margin-top: calc(28*var(--u))
+    }
+
+    .floor {
+      margin-top: auto;
+      padding-top: calc(40*var(--u))
+    }
+
+    .floor-head {
+      display: flex;
+      align-items: center;
+      gap: calc(14*var(--u));
+      padding-bottom: calc(12*var(--u))
+    }
+
+    .floor-count {
+      margin-left: auto;
+      font: 500 calc(12*var(--u))/1 var(--ui);
+      color: var(--muted);
+      font-variant-numeric: tabular-nums
+    }
+
+    .floor-count b {
+      color: var(--ink);
+      font-weight: 600
+    }
+
+    .floor-arrows {
+      display: flex;
+      gap: calc(4*var(--u))
+    }
+
+    .sq {
+      width: calc(32*var(--u));
+      height: calc(32*var(--u));
+      border-radius: 50%;
+      border: 1px solid var(--line-2);
+      display: grid;
+      place-items: center;
+      font-size: calc(13*var(--u));
+      transition: transform 160ms var(--ease-out), background-color 200ms ease, color 200ms ease
+    }
+
+    .sq:active {
+      transform: scale(.92)
+    }
+
+    @media (hover:hover) {
+      .sq:hover {
+        background: var(--ink);
+        color: #fff;
+        border-color: var(--ink)
+      }
+    }
+
+    .floor-list {
+      border-top: 1px solid var(--line);
+      min-height: calc(46*3*var(--u))
+    }
+
+    .frow {
+      position: relative;
+      display: grid;
+      grid-template-columns: calc(34*var(--u)) minmax(0, 1fr) auto;
+      align-items: center;
+      gap: calc(10*var(--u));
+      width: 100%;
+      height: calc(46*var(--u));
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      color: var(--muted);
+      transition: color 200ms ease
+    }
+
+    .frow-n {
+      font: 500 calc(11*var(--u))/1 var(--ui);
+      font-variant-numeric: tabular-nums
+    }
+
+    .frow-t {
+      font: 500 calc(14.5*var(--u))/1.2 var(--ui);
+      letter-spacing: -.01em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: 0
+    }
+
+    .frow-p {
+      font: 500 calc(13*var(--u))/1 var(--ui);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap
+    }
+
+    .frow.on {
+      color: var(--ink)
+    }
+
+    @media (hover:hover) {
+      .frow:hover {
+        color: var(--ink)
+      }
+    }
+
+    .frow-bar {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 1px;
+      overflow: hidden
+    }
+
+    .frow-bar i {
+      position: absolute;
+      inset: 0;
+      background: var(--ink);
+      transform-origin: 0 50%;
+      transform: scaleX(0)
+    }
+
+    .hero-frame {
+      position: relative;
+      height: calc(760*var(--u));
+      border-radius: calc(14*var(--u));
+      overflow: hidden;
+      background: var(--stone);
+      border: 1px solid var(--line);
+      touch-action: pan-y;
+      cursor: grab
+    }
+
+    .hero-frame:active {
+      cursor: grabbing
+    }
+
+    .hero-frame.loading::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, .55) 50%, transparent 70%) 0 0/200% 100%;
+      animation: shimmer 1.4s linear infinite
+    }
+
+    @keyframes shimmer {
+      to {
+        background-position: -200% 0
+      }
+    }
+
+    .hslide {
+      position: absolute;
+      inset: 0;
+      opacity: 0
+    }
+
+    .hslide.on {
+      opacity: 1;
+      z-index: 1
+    }
+
+    .hslide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover
+    }
+
+    .hchip {
+      position: absolute;
+      z-index: 3;
+      left: calc(16*var(--u));
+      top: calc(16*var(--u));
+      height: calc(30*var(--u));
+      padding: 0 calc(12*var(--u));
+      display: inline-flex;
+      align-items: center;
+      gap: calc(8*var(--u));
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .88);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      font: 500 calc(11.5*var(--u))/1 var(--ui);
+      letter-spacing: .02em;
+      white-space: nowrap
+    }
+
+    .hchip b {
+      font-weight: 600;
+      font-variant-numeric: tabular-nums
+    }
+
+    .hview {
+      position: absolute;
+      z-index: 3;
+      right: calc(16*var(--u));
+      bottom: calc(16*var(--u));
+      height: calc(46*var(--u));
+      padding: 0 calc(8*var(--u)) 0 calc(18*var(--u));
+      display: inline-flex;
+      align-items: center;
+      gap: calc(12*var(--u));
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .9);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      font: 500 calc(13.5*var(--u))/1 var(--ui);
+      transition: transform 160ms var(--ease-out)
+    }
+
+    .hview:active {
+      transform: scale(.97)
+    }
+
+    .hview i {
+      width: calc(32*var(--u));
+      height: calc(32*var(--u));
+      border-radius: 50%;
+      background: var(--ink);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-style: normal;
+      transition: transform 250ms var(--ease-out)
+    }
+
+    @media (hover:hover) {
+      .hview:hover i {
+        transform: rotate(45deg)
+      }
+    }
+
+    /* ===================== DIVIDER ===================== */
+    .divider {
+      background: #fff;
+      border-top: 1px solid rgba(17, 17, 17, .14);
+      border-bottom: 1px solid rgba(17, 17, 17, .14)
+    }
+
+    .divider-in {
+      height: calc(111*var(--u));
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 0 var(--side);
+      font-family: var(--display);
+      font-stretch: 118%;
+      font-weight: 600;
+      font-size: calc(14*var(--u));
+      letter-spacing: .04em
+    }
+
+    .divider-in em {
+      font-style: normal;
+      color: var(--muted)
+    }
+
+    .dv-c {
+      display: inline-flex;
+      align-items: center;
+      gap: calc(14*var(--u))
+    }
+
+    .dv-arrow {
+      width: calc(40*var(--u));
+      height: calc(40*var(--u));
+      border-radius: 50%;
+      background: var(--ink);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font: 500 calc(15*var(--u))/1 var(--ui);
+      transition: transform 250ms var(--ease-out)
+    }
+
+    @media (hover:hover) {
+      .dv-c:hover .dv-arrow {
+        transform: translateY(3px)
+      }
+    }
+
+    .dv-r {
+      justify-self: end;
+      color: var(--muted)
+    }
+
+    /* ===================== FLOOR GRID ===================== */
+    .floor-sec {
+      background: var(--paper);
+      padding: calc(120*var(--u)) 0 calc(130*var(--u))
+    }
+
+    .floor-sec .board {
+      padding: 0 var(--side)
+    }
+
+    .sec-head-r {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: calc(18*var(--u))
+    }
+
+    .more-tile {
+      grid-column: span var(--sd);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      gap: calc(14*var(--u));
+      padding: calc(36*var(--u));
+      background: var(--ink);
+      color: #fff;
+      border-radius: calc(12*var(--u));
+      min-height: calc(300*var(--u))
+    }
+
+    .more-tile .eyebrow {
+      color: rgba(255, 255, 255, .55)
+    }
+
+    .more-tile h3 {
+      font-family: var(--display);
+      font-stretch: 104%;
+      font-weight: 640;
+      font-size: calc(48*var(--u));
+      line-height: .92;
+      letter-spacing: -.05em;
+      max-width: calc(520*var(--u))
+    }
+
+    .more-tile p {
+      max-width: calc(440*var(--u));
+      font: 500 calc(14.5*var(--u))/1.5 var(--ui);
+      color: rgba(255, 255, 255, .7)
+    }
+
+    .more-ctas {
+      display: flex;
+      gap: calc(10*var(--u));
+      margin-top: calc(8*var(--u));
+      flex-wrap: wrap
+    }
+
+    @media (max-width:1024px) {
+      .more-tile {
+        grid-column: 1/-1;
+        padding: 28px;
+        min-height: 0
+      }
+
+      .more-tile h3 {
+        font-size: 34px;
+        max-width: none
+      }
+
+      .more-tile p {
+        font-size: 14px;
+        max-width: none
+      }
+    }
+
+    @media (max-width:760px) {
+      .sec-head-r {
+        gap: 14px;
+        width: 100%
+      }
+
+      .more-tile {
+        grid-column: 1/-1;
+        padding: 24px 20px;
+        min-height: 0;
+        justify-content: flex-start;
+        gap: 10px
+      }
+
+      .more-tile h3 {
+        font-size: clamp(26px, 7.5vw, 32px)
+      }
+
+      .more-tile p {
+        font-size: 14px
+      }
+
+      .more-ctas {
+        width: 100%;
+        margin-top: 6px
+      }
+
+      .more-ctas .btn {
+        flex: 1 1 auto;
+        height: 44px;
+        padding: 0 16px;
+        font-size: 13.5px
+      }
+    }
+
+    /* ===================== ANATOMY ===================== */
+    .anat {
+      position: relative;
+      height: calc(1050*var(--u) + 100vh);
+      background: #fff;
+      border-top: 1px solid var(--line)
+    }
+
+    .anat-sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: var(--hdr) 0 calc(24*var(--u))
+    }
+
+    .anat-head {
+      display: grid;
+      grid-template-columns: 1fr calc(340*var(--u)) auto;
+      align-items: end;
+      gap: calc(48*var(--u));
+      padding: calc(16*var(--u)) var(--side) calc(20*var(--u))
+    }
+
+    .anat-title {
+      margin-top: calc(12*var(--u));
+      font-size: calc(46*var(--u))
+    }
+
+    .anat-intro {
+      font: 500 calc(14*var(--u))/1.45 var(--ui);
+      color: var(--muted)
+    }
+
+    .anat-count {
+      font-family: var(--display);
+      font-stretch: 118%;
+      font-weight: 640;
+      font-size: calc(26*var(--u));
+      letter-spacing: -.04em;
+      font-variant-numeric: tabular-nums
+    }
+
+    .anat-count small {
+      font-size: .55em;
+      color: var(--muted);
+      letter-spacing: 0
+    }
+
+    .frame {
+      --fw: 680;
+      --e: 0;
+      --mx: 0;
+      --my: 0;
+      position: relative;
+      flex: 1 1 auto;
+      min-height: 300px;
+      width: calc(var(--fw)*var(--u));
+      align-self: center;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: calc(12*var(--u));
+      background: var(--stone)
+    }
+
+    .track {
+      display: flex;
+      width: 300%;
+      height: 100%;
+      will-change: transform
+    }
+
+    .panel {
+      position: relative;
+      flex: 0 0 calc(100% / 3);
+      height: 100%;
+      overflow: hidden;
+      background: var(--stone)
+    }
+
+    .panel+.panel {
+      border-left: 1px solid var(--line)
+    }
+
+    .pbox {
+      position: absolute;
+      top: 5%;
+      bottom: 5%;
+      left: 50%;
+      aspect-ratio: 4/5;
+      translate: -50% 0;
+      border-radius: calc(8*var(--u));
+      overflow: hidden;
+      background: var(--stone-2);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, .08)
+    }
+
+    .pbox>img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover
+    }
+
+    .pinfo {
+      position: absolute;
+      z-index: 3;
+      width: calc(290*var(--u));
+      opacity: clamp(0, calc((var(--e) - .55) * 2.4), 1)
+    }
+
+    .pinfo--l {
+      left: 4%;
+      bottom: 7%
+    }
+
+    .pinfo--r {
+      right: 4%;
+      top: 7%
+    }
+
+    .pinfo .eyebrow {
+      display: block
+    }
+
+    .pinfo h3 {
+      margin-top: calc(12*var(--u));
+      font: 600 calc(22*var(--u))/1.15 var(--ui);
+      letter-spacing: -.025em;
+      text-wrap: balance
+    }
+
+    .pinfo p {
+      margin-top: calc(10*var(--u));
+      font: 500 calc(13.5*var(--u))/1.5 var(--ui);
+      color: var(--muted)
+    }
+
+    .pinfo .row {
+      display: flex;
+      align-items: center;
+      gap: calc(14*var(--u));
+      margin-top: calc(18*var(--u))
+    }
+
+    .pinfo .btn {
+      height: calc(40*var(--u));
+      padding: 0 calc(16*var(--u));
+      font-size: calc(13*var(--u))
+    }
+
+    .leaders {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2;
+      overflow: visible
+    }
+
+    .leaders line {
+      stroke-linecap: round
+    }
+
+    .leaders .halo {
+      stroke: rgba(255, 255, 255, .9);
+      stroke-width: 3
+    }
+
+    .leaders .core {
+      stroke: var(--ink);
+      stroke-width: 1.2
+    }
+
+    .pin {
+      --r: 0;
+      position: absolute;
+      z-index: 4;
+      left: calc(var(--x)*1%);
+      top: calc(var(--y)*1%);
+      translate: -50% -50%;
+      opacity: clamp(0, calc(var(--r) * 3), 1);
+      scale: calc(.6 + var(--r) * .4);
+      width: calc(32*var(--u));
+      height: calc(32*var(--u));
+      border-radius: 50%;
+      background: var(--ink);
+      color: #fff;
+      border: 2px solid #fff;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, .25);
+      display: grid;
+      place-items: center;
+      font: 600 calc(10.5*var(--u))/1 var(--ui)
+    }
+
+    .pin::before {
+      content: "";
+      position: absolute;
+      inset: -7px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, .9);
+      animation: ping 2.4s var(--ease-out) infinite
+    }
+
+    .spec {
+      --r: 0;
+      position: absolute;
+      z-index: 3;
+      width: calc(250*var(--u));
+      padding: calc(14*var(--u)) calc(16*var(--u)) calc(15*var(--u));
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: calc(10*var(--u));
+      box-shadow: 0 calc(14*var(--u)) calc(34*var(--u)) rgba(0, 0, 0, .08);
+      opacity: var(--r);
+      pointer-events: none;
+      transform-origin: var(--ox, 100%) 50%;
+      transform: perspective(700px) rotateY(calc((1 - var(--r)) * var(--dir, -1) * 32deg + var(--mx) * 8deg)) rotateX(calc(var(--my) * -6deg)) translateY(calc((1 - var(--r)) * 14px)) scale(calc(.94 + var(--r) * .06));
+      transition: box-shadow 200ms ease
+    }
+
+    .spec.live {
+      pointer-events: auto
+    }
+
+    .spec.hot {
+      box-shadow: 0 calc(22*var(--u)) calc(48*var(--u)) rgba(0, 0, 0, .15)
+    }
+
+    .spec--l {
+      left: 4%;
+      --ox: 100%;
+      --dir: 1
+    }
+
+    .spec--r {
+      right: 4%;
+      --ox: 0%;
+      --dir: -1
+    }
+
+    .spec small {
+      display: flex;
+      justify-content: space-between;
+      font: 500 calc(9.5*var(--u))/1 var(--ui);
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted)
+    }
+
+    .spec h4 {
+      margin-top: calc(9*var(--u));
+      font: 600 calc(15*var(--u))/1.2 var(--ui);
+      letter-spacing: -.02em
+    }
+
+    .spec p {
+      margin-top: calc(6*var(--u));
+      font: 500 calc(12*var(--u))/1.45 var(--ui);
+      color: var(--muted)
+    }
+
+    .anat-foot {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: calc(28*var(--u));
+      padding: calc(18*var(--u)) var(--side) 0
+    }
+
+    .rail {
+      display: flex;
+      gap: calc(6*var(--u))
+    }
+
+    .rail-btn {
+      height: calc(32*var(--u));
+      padding: 0 calc(14*var(--u));
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      font: 500 calc(11.5*var(--u))/1 var(--ui);
+      letter-spacing: .02em;
+      color: var(--muted);
+      transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease, transform 160ms var(--ease-out)
+    }
+
+    .rail-btn:active {
+      transform: scale(.96)
+    }
+
+    .rail-btn.on {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: #fff
+    }
+
+    .rail-line {
+      height: 1px;
+      background: var(--line-2);
+      position: relative;
+      overflow: hidden
+    }
+
+    .rail-line i {
+      position: absolute;
+      inset: 0;
+      background: var(--ink);
+      transform-origin: 0 50%;
+      transform: scaleX(0)
+    }
+
+    /* ===================== MANIFESTO ===================== */
+    .manifesto {
+      background: #fff;
+      padding: calc(170*var(--u)) 0 calc(200*var(--u))
+    }
+
+    .statement {
+      width: calc(860*var(--u));
+      margin: 0 auto;
+      text-align: center;
+      font: 500 calc(52*var(--u))/1.33 var(--ui);
+      letter-spacing: -.028em
+    }
+
+    .statement .ln {
+      display: block;
+      white-space: nowrap
+    }
+
+    .js .statement .w {
+      color: var(--silver)
+    }
+
+    .subline {
+      width: calc(820*var(--u));
+      margin: calc(140*var(--u)) auto 0;
+      text-align: center;
+      font: 500 calc(23*var(--u))/1.4 var(--ui);
+      letter-spacing: -.015em
+    }
+
+    .subline em {
+      font-style: italic;
+      color: var(--muted)
+    }
+
+    /* ===================== TRUST ===================== */
+    .trust {
+      background: var(--paper);
+      padding: calc(110*var(--u)) 0 calc(150*var(--u))
+    }
+
+    .tpanel {
+      position: relative;
+      width: calc(1302*var(--u));
+      height: calc(429*var(--u));
+      margin: 0 auto;
+      background: #fff;
+      border: 1px solid rgba(17, 17, 17, .18);
+      border-radius: calc(14*var(--u));
+      overflow: hidden
+    }
+
+    .t-left {
+      position: absolute;
+      left: calc(48*var(--u));
+      top: calc(44*var(--u));
+      width: calc(450*var(--u))
+    }
+
+    .t-head {
+      font: 500 calc(55*var(--u))/1 var(--ui);
+      letter-spacing: -.045em
+    }
+
+    .t-para {
+      margin-top: calc(28*var(--u));
+      width: calc(370*var(--u));
+      font: 500 calc(14.5*var(--u))/1.5 var(--ui);
+      color: var(--body)
+    }
+
+    .gtile {
+      position: absolute;
+      z-index: 2;
+      width: calc(88*var(--u));
+      height: calc(88*var(--u));
+      border-radius: calc(12*var(--u));
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, .55);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(17, 17, 17, .14);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, .07)
+    }
+
+    .gtile svg {
+      width: calc(44*var(--u));
+      height: calc(44*var(--u))
+    }
+
+    .gtile-1 {
+      left: calc(318*var(--u));
+      top: calc(22*var(--u));
+      rotate: 6deg
+    }
+
+    .gtile-2 {
+      left: calc(258*var(--u));
+      top: calc(196*var(--u));
+      rotate: -5deg
+    }
+
+    .tcard {
+      position: absolute;
+      top: calc(51*var(--u));
+      height: calc(326*var(--u));
+      border-radius: calc(8*var(--u));
+      overflow: hidden;
+      transition: transform 250ms var(--ease-out), box-shadow 250ms var(--ease-out)
+    }
+
+    @media (hover:hover) {
+      .tcard:hover {
+        transform: translateY(calc(-6*var(--u)));
+        box-shadow: 0 18px 40px rgba(0, 0, 0, .08)
+      }
+    }
+
+    .tc-av {
+      left: calc(524*var(--u));
+      width: calc(276*var(--u));
+      background: var(--stone-3);
+      padding: calc(22*var(--u));
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between
+    }
+
+    .av-grid {
+      display: grid;
+      grid-template-columns: repeat(4, calc(48*var(--u)));
+      justify-content: space-between;
+      row-gap: calc(12*var(--u))
+    }
+
+    .av {
+      width: calc(48*var(--u));
+      height: calc(48*var(--u));
+      border-radius: 50%;
+      object-fit: cover;
+      filter: grayscale(1) contrast(1.05);
+      border: 2px solid #fff;
+      background: #ddd;
+      color: transparent;
+      font-size: 0
+    }
+
+    .av.missing {
+      background: radial-gradient(circle, #fff 0 2px, transparent 2.5px), radial-gradient(circle, transparent 0 8px, rgba(255, 255, 255, .85) 8.5px 9.5px, transparent 10px), var(--ink)
+    }
+
+    .tc-num {
+      font-family: var(--display);
+      font-stretch: 110%;
+      font-weight: 640;
+      font-size: calc(43*var(--u));
+      line-height: .9;
+      letter-spacing: -.05em;
+      font-variant-numeric: tabular-nums
+    }
+
+    .tc-lbl {
+      margin-top: calc(8*var(--u));
+      font: 500 calc(13*var(--u))/1.35 var(--ui);
+      color: var(--muted)
+    }
+
+    .tc-dark {
+      left: calc(814*var(--u));
+      width: calc(280*var(--u));
+      background: var(--ink);
+      color: #fff;
+      padding: calc(22*var(--u));
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between
+    }
+
+    .tc-dark-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: calc(10*var(--u))
+    }
+
+    .tc-big {
+      font-family: var(--display);
+      font-stretch: 110%;
+      font-weight: 640;
+      font-size: calc(40*var(--u));
+      line-height: .92;
+      letter-spacing: -.05em
+    }
+
+    .seal {
+      width: calc(96*var(--u));
+      height: calc(96*var(--u));
+      flex: none;
+      animation: spin 40s linear infinite
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    .tc-note {
+      padding-top: calc(14*var(--u));
+      border-top: 1px solid rgba(255, 255, 255, .18);
+      font: 500 calc(12.5*var(--u))/1.5 var(--ui);
+      color: rgba(255, 255, 255, .72)
+    }
+
+    .tc-note b {
+      color: #fff;
+      font-weight: 600
+    }
+
+    .tc-note a {
+      display: inline-block;
+      margin-top: calc(10*var(--u));
+      color: #fff;
+      border-bottom: 1px solid rgba(255, 255, 255, .4)
+    }
+
+    .tc-portrait {
+      left: calc(1108*var(--u));
+      width: calc(168*var(--u));
+      background: #ddd
+    }
+
+    .tc-portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover
+    }
+
+    .tc-portrait span {
+      position: absolute;
+      left: calc(14*var(--u));
+      bottom: calc(14*var(--u));
+      font: 500 calc(10*var(--u))/1 var(--ui);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: #fff;
+      text-shadow: 0 1px 8px rgba(0, 0, 0, .45)
+    }
+
+    .is-rec .anat {
+      height: 100vh
+    }
+
+    /* ===================== TABLET & PHONE ===================== */
+    @media (max-width:1024px) {
+      .hero-in {
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+        padding: 24px var(--side) 48px
+      }
+
+      .hero-left {
+        min-height: 560px
+      }
+
+      .hero-frame {
+        height: 560px
+      }
+
+      .title {
+        font-size: clamp(72px, 9.5vw, 104px)
+      }
+
+      .anat {
+        height: auto
+      }
+
+      .anat-sticky {
+        position: relative;
+        height: auto;
+        overflow: visible;
+        padding: 64px 0 56px
+      }
+
+      .anat-head {
+        grid-template-columns: 1fr;
+        gap: 14px;
+        padding: 0 var(--side) 24px
+      }
+
+      .anat-title {
+        font-size: 42px
+      }
+
+      .anat-intro {
+        font-size: 14.5px;
+        max-width: 520px
+      }
+
+      .anat-count {
+        display: none
+      }
+
+      .frame {
+        width: auto;
+        align-self: stretch;
+        margin: 0 var(--side);
+        border: 0;
+        background: none;
+        overflow: visible;
+        min-height: 0;
+        --e: 1
+      }
+
+      .track {
+        flex-direction: column;
+        width: 100%;
+        gap: 24px;
+        transform: none !important
+      }
+
+      .panel {
+        flex: none;
+        height: auto;
+        overflow: visible;
+        background: #fff;
+        border: 1px solid var(--line) !important;
+        border-radius: 14px;
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px
+      }
+
+      .pbox {
+        position: relative;
+        top: auto;
+        bottom: auto;
+        left: auto;
+        translate: none;
+        width: 100%;
+        border-radius: 10px;
+        box-shadow: none;
+        border: 1px solid var(--line)
+      }
+
+      .pinfo {
+        position: static;
+        width: auto;
+        opacity: 1;
+        order: 2
+      }
+
+      .pinfo h3 {
+        margin-top: 8px;
+        font-size: 21px
+      }
+
+      .pinfo p {
+        margin-top: 8px;
+        font-size: 14px
+      }
+
+      .pinfo .row {
+        justify-content: space-between;
+        margin-top: 14px;
+        padding-top: 14px;
+        border-top: 1px solid var(--line)
+      }
+
+      .pinfo .btn {
+        height: 42px;
+        padding: 0 18px;
+        font-size: 13.5px
+      }
+
+      .pin {
+        opacity: 1;
+        scale: 1;
+        width: 30px;
+        height: 30px;
+        font-size: 11px
+      }
+
+      .spec {
+        position: static;
+        width: auto;
+        opacity: 1;
+        transform: none;
+        order: 3;
+        pointer-events: auto;
+        padding: 12px 14px;
+        background: var(--paper);
+        box-shadow: none;
+        border-radius: 10px
+      }
+
+      .spec small {
+        font-size: 10px
+      }
+
+      .spec h4 {
+        margin-top: 6px;
+        font-size: 15px
+      }
+
+      .spec p {
+        margin-top: 4px;
+        font-size: 13px
+      }
+
+      .leaders {
+        display: none
+      }
+
+      .anat-foot {
+        display: none
+      }
+
+      .manifesto {
+        padding: 100px var(--side) 110px
+      }
+
+      .statement {
+        width: auto;
+        max-width: 720px;
+        font-size: clamp(28px, 4.5vw, 40px)
+      }
+
+      .statement .ln {
+        display: inline;
+        white-space: normal
+      }
+
+      .subline {
+        width: auto;
+        margin-top: 64px;
+        font-size: 18px
+      }
+
+      .trust {
+        padding: 64px var(--side) 90px
+      }
+
+      .tpanel {
+        width: 100%;
+        height: auto;
+        padding: 28px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px
+      }
+
+      .t-left {
+        position: relative;
+        left: auto;
+        top: auto;
+        width: 100%;
+        grid-column: 1/-1;
+        margin-bottom: 8px;
+        padding-right: 84px
+      }
+
+      .t-head {
+        font-size: 44px
+      }
+
+      .t-para {
+        width: 100%;
+        max-width: 480px;
+        margin-top: 16px;
+        font-size: 15px
+      }
+
+      .gtile-1 {
+        left: auto;
+        right: 24px;
+        top: 24px;
+        width: 68px;
+        height: 68px
+      }
+
+      .gtile-2 {
+        display: none
+      }
+
+      .tcard {
+        position: relative;
+        left: auto;
+        top: auto;
+        width: 100%;
+        height: auto;
+        min-height: 280px
+      }
+
+      .tc-av,
+      .tc-dark {
+        padding: 22px;
+        gap: 24px
+      }
+
+      .av-grid {
+        grid-template-columns: repeat(4, 48px);
+        justify-content: flex-start;
+        gap: 12px
+      }
+
+      .av {
+        width: 48px;
+        height: 48px
+      }
+
+      .tc-num {
+        font-size: 42px
+      }
+
+      .tc-lbl {
+        font-size: 13px
+      }
+
+      .tc-big {
+        font-size: 38px
+      }
+
+      .seal {
+        width: 88px;
+        height: 88px
+      }
+
+      .tc-note {
+        font-size: 13px
+      }
+
+      .tc-portrait {
+        grid-column: 1/-1;
+        height: 280px
+      }
+
+      .tc-portrait span {
+        font-size: 10.5px;
+        left: 16px;
+        bottom: 16px
+      }
+    }
+
+    @media (max-width:760px) {
+      .hero-in {
+        grid-template-columns: 1fr;
+        gap: 0;
+        padding: 16px 16px 40px
+      }
+
+      .hero-left {
+        display: contents;
+        min-height: 0
+      }
+
+      .hero-eyebrow {
+        order: 1;
+        font-size: 12px;
+        gap: 8px;
+        flex-wrap: wrap
+      }
+
+      .title-wrap {
+        order: 2;
+        margin-top: 24px;
+        max-width: calc(100% - 42px)
+      }
+
+      .title {
+        font-size: clamp(64px, 21vw, 86px)
+      }
+
+      .year {
+        font-size: 13px;
+        top: 12px;
+        left: calc(100% + 6px)
+      }
+
+      .hero-lede {
+        order: 3;
+        margin-top: 18px;
+        font-size: 15.5px;
+        max-width: none
+      }
+
+      .hero-ctas {
+        order: 4;
+        margin-top: 20px;
+        flex-wrap: wrap;
+        gap: 10px
+      }
+
+      .hero-ctas .btn {
+        flex: 1 1 140px
+      }
+
+      .hero-frame {
+        order: 5;
+        height: auto;
+        aspect-ratio: 4/5;
+        margin-top: 24px;
+        border-radius: 12px
+      }
+
+      .hchip {
+        left: 10px;
+        top: 10px;
+        font-size: 11px;
+        height: 28px;
+        padding: 0 10px;
+        gap: 6px;
+        max-width: calc(100% - 20px);
+        overflow: hidden;
+        text-overflow: ellipsis
+      }
+
+      .hview {
+        right: 10px;
+        bottom: 10px;
+        height: 42px;
+        padding: 0 6px 0 14px;
+        gap: 10px;
+        font-size: 13px
+      }
+
+      .hview i {
+        width: 30px;
+        height: 30px
+      }
+
+      .floor {
+        order: 6;
+        padding-top: 20px
+      }
+
+      .floor-head {
+        gap: 10px;
+        padding-bottom: 10px
+      }
+
+      .floor-list {
+        min-height: calc(48px * 3)
+      }
+
+      .frow {
+        grid-template-columns: 28px minmax(0, 1fr) auto;
+        gap: 8px;
+        height: 48px
+      }
+
+      .frow-t {
+        font-size: 14px
+      }
+
+      .frow-n {
+        font-size: 11px
+      }
+
+      .frow-p {
+        font-size: 13px
+      }
+
+      .sq {
+        width: 34px;
+        height: 34px;
+        font-size: 13px
+      }
+
+      .floor-count {
+        font-size: 12px
+      }
+
+      .divider-in {
+        height: auto;
+        padding: 20px 16px;
+        grid-template-columns: 1fr auto;
+        row-gap: 8px;
+        font-size: 11px
+      }
+
+      .dv-c {
+        grid-column: 2;
+        grid-row: 1/3;
+        font-size: 0;
+        gap: 0
+      }
+
+      .dv-arrow {
+        width: 40px;
+        height: 40px;
+        font-size: 15px
+      }
+
+      .dv-r {
+        justify-self: start
+      }
+
+      .floor-sec {
+        padding: 56px 0 64px
+      }
+
+      .anat-sticky {
+        padding: 52px 0 48px
+      }
+
+      .anat-head {
+        padding: 0 16px 20px
+      }
+
+      .anat-title {
+        margin-top: 10px;
+        font-size: clamp(36px, 10vw, 42px)
+      }
+
+      .anat-intro {
+        font-size: 14px
+      }
+
+      .frame {
+        margin: 0 16px
+      }
+
+      .track {
+        gap: 20px
+      }
+
+      .panel {
+        padding: 14px;
+        gap: 14px;
+        border-radius: 12px
+      }
+
+      .pinfo h3 {
+        font-size: 20px
+      }
+
+      .pinfo p {
+        font-size: 13.5px
+      }
+
+      .manifesto {
+        padding: 80px 16px 96px
+      }
+
+      .statement {
+        font-size: clamp(24px, 6.8vw, 30px)
+      }
+
+      .subline {
+        margin-top: 44px;
+        font-size: 16px
+      }
+
+      .trust {
+        padding: 52px 16px 76px
+      }
+
+      .tpanel {
+        padding: 22px 16px 16px;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        border-radius: 12px
+      }
+
+      .t-left {
+        margin-bottom: 8px;
+        padding-right: 64px
+      }
+
+      .t-head {
+        font-size: clamp(32px, 9.5vw, 42px)
+      }
+
+      .t-para {
+        margin-top: 14px;
+        font-size: 14.5px
+      }
+
+      .gtile-1 {
+        right: 14px;
+        top: 18px;
+        width: 54px;
+        height: 54px;
+        border-radius: 10px
+      }
+
+      .gtile-1 svg {
+        width: 28px;
+        height: 28px
+      }
+
+      .tcard {
+        min-height: 0;
+        border-radius: 10px
+      }
+
+      .tc-av,
+      .tc-dark {
+        gap: 24px;
+        padding: 18px
+      }
+
+      .av-grid {
+        grid-template-columns: repeat(4, 44px);
+        gap: 10px
+      }
+
+      .av {
+        width: 44px;
+        height: 44px
+      }
+
+      .tc-num {
+        font-size: 40px
+      }
+
+      .tc-lbl {
+        margin-top: 6px;
+        font-size: 13px
+      }
+
+      .tc-big {
+        font-size: 34px
+      }
+
+      .seal {
+        width: 80px;
+        height: 80px
+      }
+
+      .tc-note {
+        padding-top: 12px;
+        font-size: 13px
+      }
+
+      .tc-note a {
+        margin-top: 8px
+      }
+
+      .tc-portrait {
+        height: 240px
+      }
+
+      .tc-portrait span {
+        font-size: 10px;
+        left: 14px;
+        bottom: 14px
+      }
+    }
+  </style>
+</head>
+
+<body data-page="home">
+
+  <header class="site-header">
+    <div class="board hdr">
+      <a class="logo" href="index.html" aria-label="RETROMOD. — home">RETROMOD.</a>
+      <nav class="nav" id="nav" aria-label="Primary">
+        <span class="nav-ind" aria-hidden="true"></span>
+        <a href="index.html" data-page="home">Home</a>
+        <a href="about.html" data-page="about">About</a>
+        <a href="shop.html" data-page="shop">Shop</a>
+        <a href="contact.html" data-page="contact">Contact</a>
+      </nav>
+      <div class="hdr-right">
+        <button type="button" class="bag-btn" id="bagBtn" data-cart-open aria-controls="cartDrawer" aria-expanded="false" aria-label="Shopping bag (0 items)">
+          <span class="bag-lbl">Bag</span>
+          <span class="bag-count is-empty" data-cart-count>0</span>
+        </button>
+        <a class="btn hdr-cta" data-dm>DM to Enquire <span class="arr">↗</span></a>
+        <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="mnav"
+          aria-label="Open menu"><span></span><span></span></button>
+      </div>
+    </div>
+    <div class="mnav" id="mnav">
+      <a class="ml" href="index.html" data-page="home">Home <small>01</small></a>
+      <a class="ml" href="about.html" data-page="about">About <small>02</small></a>
+      <a class="ml" href="shop.html" data-page="shop">Shop <small>03</small></a>
+      <a class="ml" href="contact.html" data-page="contact">Contact <small>04</small></a>
+      <a class="ml" href="checkout.html" data-page="checkout">Bag &amp; Checkout <small data-cart-count>0</small></a>
+      <a class="btn" data-dm>DM to Enquire <span class="arr">↗</span></a>
+      <p class="mnav-foot">66 Grant Avenue, Corner Nellie Road<br>Norwood, Johannesburg · Nationwide shipping</p>
+    </div>
+  </header>
+
+  <main>
+    <!-- ============ HERO ============ -->
+    <section class="hero" aria-label="RETROMOD. showroom">
+      <div class="board hero-in">
+        <div class="hero-left">
+          <p class="hero-eyebrow" data-rise><i class="dot dot--live"></i> On the floor now <span>· Norwood, JHB</span>
+          </p>
+          <div class="title-wrap">
+            <h1 class="title" aria-label="Retromod">
+              <span class="tl-mask"><span class="tl">RETRO</span></span>
+              <span class="tl-mask"><span class="tl">MOD.</span></span>
+            </h1>
+            <span class="year" data-rise>('26)</span>
+          </div>
+          <p class="hero-lede" data-rise><b>Mid-Century Modern &amp; Beyond.</b> Furniture, art and audio — sourced,
+            restored and sold from our Norwood showroom. Shipped nationwide.</p>
+          <div class="hero-ctas" data-rise>
+            <a class="btn" href="shop.html">Shop the floor <span class="arr">↗</span></a>
+            <a class="btn btn--ghost" data-dm>DM to Enquire</a>
+          </div>
+
+          <div class="floor" data-rise>
+            <div class="floor-head">
+              <span class="eyebrow">Now showing</span>
+              <span class="floor-count"><b id="hIdx">01</b> / <span id="hTot">01</span></span>
+              <div class="floor-arrows">
+                <button class="sq" id="hPrev" aria-label="Previous piece">←</button>
+                <button class="sq" id="hNext" aria-label="Next piece">→</button>
+              </div>
+            </div>
+            <ol class="floor-list" id="floorList" aria-label="Pieces in the showcase"></ol>
+          </div>
+        </div>
+
+        <div class="hero-frame loading" id="heroFrame" aria-roledescription="carousel" aria-label="Featured pieces">
+          <div id="heroSlides"></div>
+          <span class="hchip" id="hChip" aria-live="polite"><b id="hChipIdx">01</b><span
+              id="hChipTxt">Loading</span></span>
+          <a class="hview" id="hView" href="shop.html">View piece <i>↗</i></a>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider">
+      <div class="board divider-in">
+        <span class="dv-l">66 GRANT AVE, <em>NORWOOD</em></span>
+        <a class="dv-c" href="#floor">SCROLL TO EXPLORE <span class="dv-arrow" aria-hidden="true">↓</span></a>
+        <span class="dv-r">FURNITURE • ART • AUDIO</span>
+      </div>
+    </div>
+
+    <!-- ============ ON THE FLOOR ============ -->
+    <section class="floor-sec" id="floor" aria-labelledby="floorTitle">
+      <div class="board">
+        <div class="sec-head">
+          <div>
+            <span class="eyebrow">(01) — The Shop</span>
+            <h2 class="display sec-title" id="floorTitle">On the floor<br>right now.</h2>
+          </div>
+          <div class="sec-head-r">
+            <p class="sec-intro">Every piece below is in the Norwood showroom today. Stock moves fast — new pieces land
+              on Instagram first, so DM to reserve.</p>
+            <a class="btn btn--ghost" href="shop.html"><span>View all stock (<span data-stock-count>0</span>)</span>
+              <span class="arr">↗</span></a>
+          </div>
+        </div>
+        <div class="pgrid" id="homeGrid"></div>
+      </div>
+    </section>
+
+    <!-- ============ ANATOMY ============ -->
+    <section class="anat" id="anatomy" aria-label="Piece anatomy">
+      <div class="anat-sticky">
+        <div class="board anat-head">
+          <div>
+            <span class="eyebrow">(02) — Anatomy of a piece</span>
+            <h2 class="display anat-title">Inspect the<br>details.</h2>
+          </div>
+          <p class="anat-intro">Every piece is documented before it reaches the floor. Scroll to open the frame, hover
+            the pins to inspect.</p>
+          <div class="anat-count"><span id="anatIdx">01</span><small> / 03</small></div>
+        </div>
+
+        <div class="frame" id="frame">
+          <div class="track" id="track">
+            <article class="panel" data-panel="0" data-id="kartell-taj-lamp">
+              <div class="pbox" id="pbox0">
+                <button class="pin" style="--x:46;--y:24" data-i="0"
+                  aria-label="Inspect: transparent PMMA arc">01</button>
+                <button class="pin" style="--x:12;--y:33" data-i="1" aria-label="Inspect: integrated LED">02</button>
+                <button class="pin" style="--x:79;--y:87" data-i="2" aria-label="Inspect: Kartell signature">03</button>
+              </div>
+              <svg class="leaders" id="leaders" aria-hidden="true">
+                <g>
+                  <line class="halo" />
+                  <line class="core" />
+                </g>
+                <g>
+                  <line class="halo" />
+                  <line class="core" />
+                </g>
+                <g>
+                  <line class="halo" />
+                  <line class="core" />
+                </g>
+              </svg>
+              <div class="spec spec--l" data-i="0" style="top:12%">
+                <small><span>01 · Material</span><span>PMMA</span></small>
+                <h4>One continuous arc</h4>
+                <p>A single flowing curve of transparent PMMA — sculpture first, lamp second.</p>
+              </div>
+              <div class="spec spec--l" data-i="1" style="top:46%">
+                <small><span>02 · Light</span><span>LED</span></small>
+                <h4>Integrated LED</h4>
+                <p>LEDs run along the underside of the arc for an even, glare-free wash.</p>
+              </div>
+              <div class="spec spec--r" data-i="2" style="top:58%">
+                <small><span>03 · Mark</span><span>Italy</span></small>
+                <h4>Kartell signature</h4>
+                <p>Moulded maker's mark in the foot. Designed by Ferruccio Laviani, c.2012.</p>
+              </div>
+              <div class="pinfo pinfo--r" data-info></div>
+            </article>
+            <article class="panel" data-panel="1" data-id="marantz-twenty-nine">
+              <div class="pbox"></div>
+              <div class="pinfo pinfo--l" data-info></div>
+            </article>
+            <article class="panel" data-panel="2" data-id="fujifilm-x100v">
+              <div class="pbox"></div>
+              <div class="pinfo pinfo--l" data-info></div>
+            </article>
+          </div>
+        </div>
+
+        <div class="board anat-foot">
+          <div class="rail" id="rail"></div>
+          <div class="rail-line"><i id="railFill"></i></div>
+          <span class="eyebrow">Scroll to scrub</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ MANIFESTO ============ -->
+    <section class="manifesto" aria-label="Manifesto">
+      <div class="board">
+        <p class="statement" id="statement">
+          <span class="ln">We believe the finest interiors are</span>
+          <span class="ln">curated through character, not mass</span>
+          <span class="ln">production. Every mid-century piece is</span>
+          <span class="ln">hand-selected, restored to endure, and</span>
+          <span class="ln">built to anchor modern living spaces.</span>
+        </p>
+        <p class="subline">Furniture, art, lighting &amp; vintage audio.<br><em>Sourced in Johannesburg, shipped
+            nationwide.</em></p>
+      </div>
+    </section>
+
+    <!-- ============ TRUST ============ -->
+    <section class="trust" aria-label="Community">
+      <div class="board">
+        <div class="tpanel" id="tpanel">
+          <div class="t-left">
+            <h2 class="t-head">Trusted by<br>Designers &amp;<br>Discerning<br>Collectors</h2>
+            <p class="t-para">From Grant Avenue in Norwood to homes and studios across South Africa — every drop goes
+              fast via Instagram DM.</p>
+          </div>
+          <div class="gtile gtile-1" aria-hidden="true"><svg viewBox="0 0 44 44" id="starTile"></svg></div>
+          <div class="gtile gtile-2" aria-hidden="true">
+            <svg viewBox="0 0 44 44" fill="none" stroke="#111">
+              <circle cx="13" cy="13" r="7" fill="#111" stroke="none" />
+              <circle cx="13" cy="13" r="2" fill="#fff" stroke="none" />
+              <circle cx="31" cy="13" r="7" stroke-width="1.4" />
+              <circle cx="13" cy="31" r="7" stroke-width="1.4" />
+              <circle cx="31" cy="31" r="7" stroke-width="1.4" />
+              <circle cx="31" cy="31" r="3.6" stroke-width="1" />
+              <circle cx="31" cy="31" r="1" fill="#111" />
+            </svg>
+          </div>
+          <div class="tcard tc-av">
+            <div class="av-grid" id="avGrid"></div>
+            <div>
+              <div class="tc-num count" data-to="55.3" data-dec="1" data-suffix="K">55.3K</div>
+              <div class="tc-lbl">Instagram community<br>(@retromod.za)</div>
+            </div>
+          </div>
+          <div class="tcard tc-dark">
+            <div class="tc-dark-top">
+              <div class="tc-big">Buyers<br>&amp; Sellers</div>
+              <svg class="seal" viewBox="0 0 120 120" id="seal" role="img"
+                aria-label="RETROMOD. Norwood, Johannesburg seal"></svg>
+            </div>
+            <p class="tc-note"><b>Got a piece to sell?</b> Mid-century furniture, art, vintage Hi-Fi or cameras — send
+              us photos and we'll come back with an offer.<br><a data-dm>DM photos ↗</a></p>
+          </div>
+          <div class="tcard tc-portrait">
+            <img src="assets/stock/kartell-taj-lamp.jpg" alt="Kartell Taj lamp in the Norwood showroom" loading="lazy">
+            <span>The showroom</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="board ftr">
+      <div class="ftr-top">
+        <div class="ftr-brand">
+          <div class="ftr-word">RETROMOD.</div>
+          <p class="ftr-tag">Mid-Century Modern &amp; Beyond. Furniture • Art • Audio. Buyers and sellers — shipped
+            nationwide from Norwood, Johannesburg.</p>
+        </div>
+        <div>
+          <h4>Visit</h4>
+          <address>66 Grant Avenue<br>Corner Nellie Road<br>Norwood, Johannesburg 2192</address>
+          <ul style="margin-top:calc(12*var(--u))">
+            <li><a data-maps>Open in Maps ↗</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Shop</h4>
+          <ul>
+            <li><a href="shop.html">All stock</a></li>
+            <li><a href="shop.html?cat=audio">Audio</a></li>
+            <li><a href="shop.html?cat=lighting">Lighting</a></li>
+            <li><a href="shop.html?cat=cameras">Cameras</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Connect</h4>
+          <ul>
+            <li><a data-ig>Instagram @retromod.za</a></li>
+            <li><a data-dm>Send a DM</a></li>
+            <li><a data-wa>WhatsApp community</a></li>
+            <li><a href="about.html">About us</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="ftr-bot"><span>© <span data-year>2026</span> RETROMOD. All rights reserved.</span><span>Nationwide
+          shipping · Norwood, Johannesburg</span></div>
+    </div>
+  </footer>
+
+  <script src="assets/js/products.js"></script>
+  <script src="assets/js/site.js"></script>
+  <script src="assets/js/cart.js"></script>
+  <script>
+    (() => {
+      'use strict';
+      const D = window.RETROMOD;
+      const { $, $$, fmt, img, esc, card, reveal, CAT, isSold, onCatalog, REDUCE: RM_REDUCE } = window.RM;
+      const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+      const lerp = (a, b, t) => a + (b - a) * t;
+      const easeIO = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      const EASE = 'cubic-bezier(.23,1,.32,1)';
+      const REC = new URLSearchParams(location.search).get('rec') === '1';
+      const REDUCE = RM_REDUCE && !REC;
+      const mqMobile = matchMedia('(max-width: 1024px)');
+      const isMobile = () => mqMobile.matches && !REC;
+      const AUTO_MS = 6000;
+      const byId = id => D.products.find(p => p.id === id);
+      const short = p => p.title.replace(/^Vintage /, '').replace(/ Stereo Integrated Amplifier$/, ' Amplifier');
+
+      const EDITORIAL = [
+        { src: 'assets/stock/kartell-taj-lamp.jpg', title: 'Kartell Taj Lamp', chip: 'Lighting', href: 'shop.html' },
+        { src: 'assets/stock/marantz-twenty-nine.jpg', title: 'Marantz Model 29', chip: 'Audio', href: 'shop.html' }
+      ];
+      const AVATARS = Array.from({ length: 8 }, (_, i) => `assets/img/avatars/collector-${i + 1}.svg`);
+
+      /* ---------------- intro ---------------- */
+      if (!REDUCE) {
+        $$('.tl').forEach((el, i) => el.animate([{ transform: 'translateY(105%)' }, { transform: 'translateY(0)' }], { duration: 1000, delay: 120 + i * 110, easing: EASE, fill: 'backwards' }));
+        $('#heroFrame').animate([{ opacity: 0, transform: 'translateY(32px)', filter: 'blur(10px)' }, { opacity: 1, transform: 'none', filter: 'blur(0px)' }], { duration: 1200, delay: 80, easing: EASE, fill: 'backwards' });
+        $$('.hero [data-rise]').forEach((el, i) => el.animate([{ opacity: 0, transform: 'translateY(14px)' }, { opacity: 1, transform: 'none' }], { duration: 800, delay: 260 + i * 60, easing: EASE, fill: 'backwards' }));
+      }
+
+      /* ---------------- hero showcase ---------------- */
+      const frame = $('#heroFrame'), slidesEl = $('#heroSlides'), list = $('#floorList');
+      let items = [], slides = [], rows = [], cur = -1, elapsed = 0, hovering = false, heroVisible = true, tickStarted = false;
+
+      function renderHeroShowcase() {
+        const prods = D.products.filter(p => !isSold(p));
+        items = prods.map(p => ({
+          src: img(p), title: short(p), alt: p.title, price: fmt(p.price), href: `product.html?id=${encodeURIComponent(p.id)}`,
+          chip: [CAT[p.category], (p.era || '').replace(/^Circa /i, 'c.')].filter(Boolean).join(' · ')
+        }));
+        for (const e of EDITORIAL) { if (items.length >= 3) break; items.push({ ...e, alt: e.title, price: '' }); }
+        slidesEl.innerHTML = items.map((it, i) => `<figure class="hslide" aria-hidden="true"><img src="${esc(it.src)}" alt="${esc(it.alt)}" ${i ? 'loading="lazy"' : 'fetchpriority="high"'} draggable="false"></figure>`).join('');
+        list.innerHTML = items.map((it, i) => `<li><button class="frow" data-i="${i}"><span class="frow-n">${String(i + 1).padStart(2, '0')}</span><span class="frow-t">${esc(it.title)}</span><span class="frow-p">${it.price || it.chip}</span><i class="frow-bar"><i></i></i></button></li>`).join('');
+        slides = $$('.hslide', slidesEl); rows = $$('.frow', list);
+        rows.forEach(r => r.addEventListener('click', () => go(+r.dataset.i)));
+        $('#hTot').textContent = String(items.length).padStart(2, '0');
+        frame.classList.remove('loading');
+        const nextIdx = cur >= 0 && cur < items.length ? cur : 0;
+        cur = -1;
+        go(nextIdx);
+        if (!tickStarted) {
+          tickStarted = true;
+          requestAnimationFrame(tick);
+        }
+      }
+
+      function go(n) {
+        if (!items.length) return;
+        n = (n + items.length) % items.length;
+        if (n === cur) return;
+        const dir = n > cur ? 1 : -1, out = slides[cur], inn = slides[n];
+        if (out) { out.classList.remove('on'); out.setAttribute('aria-hidden', 'true'); }
+        inn.classList.add('on'); inn.setAttribute('aria-hidden', 'false');
+        if (!REDUCE && cur !== -1) {
+          out && out.animate([{ opacity: 1, transform: 'scale(1)' }, { opacity: 0, transform: 'scale(1.02)' }], { duration: 500, easing: EASE });
+          inn.animate([{ opacity: 0, transform: `scale(1.06) translateX(${dir * 1.5}%)`, filter: 'blur(8px)' }, { opacity: 1, transform: 'none', filter: 'blur(0px)' }], { duration: 850, easing: EASE });
+        } else if (cur !== -1) {
+          inn.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 250 });
+        }
+        rows.forEach((r, i) => { r.classList.toggle('on', i === n); r.setAttribute('aria-current', i === n); const b = $('.frow-bar i', r); if (i !== n) b.style.transform = 'scaleX(0)'; });
+        const it = items[n];
+        $('#hIdx').textContent = $('#hChipIdx').textContent = String(n + 1).padStart(2, '0');
+        $('#hChipTxt').textContent = it.chip;
+        $('#hView').href = it.href;
+        $('#hView').firstChild.textContent = it.price ? 'View piece ' : 'Shop the floor ';
+        cur = n; elapsed = 0;
+      }
+      $('#hPrev').addEventListener('click', () => go(cur - 1));
+      $('#hNext').addEventListener('click', () => go(cur + 1));
+      list.addEventListener('keydown', e => {
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); go(cur + (e.key === 'ArrowDown' ? 1 : -1)); rows[cur] && rows[cur].focus(); }
+      });
+      [frame, list].forEach(el => { el.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') hovering = true; }); el.addEventListener('pointerleave', () => hovering = false); });
+      let sx = null;
+      frame.addEventListener('pointerdown', e => { if (!e.target.closest('a')) sx = e.clientX; });
+      addEventListener('pointerup', e => { if (sx === null) return; const dx = e.clientX - sx; sx = null; if (Math.abs(dx) > 40) go(cur + (dx < 0 ? 1 : -1)); });
+      addEventListener('pointercancel', () => sx = null);
+      new IntersectionObserver(([en]) => heroVisible = en.isIntersecting, { threshold: .2 }).observe(frame);
+      let lastT = performance.now();
+      function tick(now) {
+        const dt = Math.min(100, now - lastT); lastT = now;
+        if (!REDUCE && !REC && !hovering && heroVisible && !document.hidden && items.length > 1) {
+          elapsed += dt;
+          if (elapsed >= AUTO_MS) go(cur + 1);
+        }
+        const bar = rows[cur] && $('.frow-bar i', rows[cur]);
+        if (bar) bar.style.transform = `scaleX(${REDUCE ? 1 : clamp(elapsed / AUTO_MS).toFixed(4)})`;
+        requestAnimationFrame(tick);
+      }
+
+      /* ---------------- floor grid & anatomy ---------------- */
+      const anat = $('#anatomy'), aframe = $('#frame'), track = $('#track');
+      const panels = $$('.panel', track);
+
+      function renderFloorAndAnatomy() {
+        const onFloor = D.products.filter(p => !isSold(p)).slice(0, 8);
+        const spanD = (4 - onFloor.length % 4) % 4, spanM = onFloor.length % 2;
+        $('#homeGrid').innerHTML = onFloor.map(card).join('') + ((spanD || spanM) ? `
+  <aside class="more-tile rv" style="--sd:${spanD || 4};--sm:${spanM ? 1 : 2}">
+    <span class="eyebrow">Instagram first</span>
+    <h3>New pieces drop every week.</h3>
+    <p>${D.posts} posts and counting. Follow @retromod.za or join the WhatsApp community to see stock before it sells.</p>
+    <div class="more-ctas"><a class="btn btn--white" data-ig2>Follow <span class="arr">↗</span></a><a class="btn btn--ghost-w" data-wa2>WhatsApp community</a></div>
+  </aside>` : '');
+        $$('[data-ig2]').forEach(a => { a.href = D.links.instagram; a.target = '_blank'; a.rel = 'noopener'; });
+        $$('[data-wa2]').forEach(a => { a.href = D.links.whatsapp; a.target = '_blank'; a.rel = 'noopener'; });
+        reveal($('#homeGrid'));
+
+        panels.forEach((pn, i) => {
+          const p = byId(pn.dataset.id); if (!p) return;
+          const box = $('.pbox', pn);
+          $$(':scope > img, :scope > .ph', box).forEach(el => el.remove());
+          box.insertAdjacentHTML('afterbegin', window.RM.media(p, i === 0));
+          $('[data-info]', pn).innerHTML = `
+    <span class="eyebrow">0${i + 1} / 03 · ${esc(CAT[p.category])}</span>
+    <h3>${esc(p.title)}</h3>
+    <p>${esc(p.lede)}</p>
+    <div class="row"><span class="price">${fmt(p.price)}</span><a class="btn" href="product.html?id=${encodeURIComponent(p.id)}">View piece <span class="arr">↗</span></a></div>`;
+        });
+      }
+
+      $('#rail').innerHTML = panels.map((pn, i) => { const p = byId(pn.dataset.id); return `<button class="rail-btn${i ? '' : ' on'}" data-go="${i}">0${i + 1} ${esc(p ? p.maker.split('·')[0].trim() : '')}</button>`; }).join('');
+      onCatalog(() => {
+        renderHeroShowcase();
+        renderFloorAndAnatomy();
+      });
+      const railBtns = $$('.rail-btn'), railFill = $('#railFill'), anatIdx = $('#anatIdx');
+      const panel0 = panels[0], pins = $$('.pin', panel0), specs = $$('.spec', panel0), leaders = $('#leaders'), leaderGroups = $$('g', leaders);
+      const pinR = [0, 0, 0];
+      function drawLeaders() {
+        if (isMobile()) return;
+        const pr = panel0.getBoundingClientRect();
+        leaders.setAttribute('viewBox', `0 0 ${pr.width.toFixed(1)} ${pr.height.toFixed(1)}`);
+        pins.forEach((pin, i) => {
+          const r = pinR[i], b = pin.getBoundingClientRect(), s = specs[i];
+          const px = b.left + b.width / 2 - pr.left, py = b.top + b.height / 2 - pr.top;
+          const left = s.classList.contains('spec--l');
+          const ax = left ? s.offsetLeft + s.offsetWidth : s.offsetLeft, ay = s.offsetTop + s.offsetHeight / 2;
+          $$('line', leaderGroups[i]).forEach(l => {
+            l.setAttribute('x1', px.toFixed(1)); l.setAttribute('y1', py.toFixed(1));
+            l.setAttribute('x2', lerp(px, ax, r).toFixed(1)); l.setAttribute('y2', lerp(py, ay, r).toFixed(1));
+            l.style.opacity = r > .01 ? 1 : 0;
+          });
+        });
+      }
+      let anatIndex = 0;
+      function setAnat(p) {
+        if (isMobile()) return;
+        const e = REDUCE ? 1 : easeIO(clamp(p / .3));
+        aframe.style.setProperty('--fw', (680 + 646 * e).toFixed(2));
+        aframe.style.setProperty('--e', e.toFixed(3));
+        for (let i = 0; i < 3; i++) {
+          const r = REDUCE ? 1 : easeIO(clamp((p - .2 - i * .07) / .14));
+          pinR[i] = r;
+          specs[i].style.setProperty('--r', r.toFixed(3));
+          pins[i].style.setProperty('--r', clamp(r * 1.6).toFixed(3));
+          specs[i].classList.toggle('live', r > .5);
+        }
+        let x;
+        if (p < .5) x = 0; else if (p < .68) x = easeIO((p - .5) / .18); else if (p < .76) x = 1; else x = 1 + easeIO(clamp((p - .76) / .18));
+        track.style.transform = `translate3d(${(-x * 100 / 3).toFixed(3)}%,0,0)`;
+        const idx = Math.round(x);
+        if (idx !== anatIndex) { anatIndex = idx; anatIdx.textContent = '0' + (idx + 1); }
+        railBtns.forEach((b, j) => b.classList.toggle('on', j === idx));
+        railFill.style.transform = `scaleX(${p.toFixed(4)})`;
+        drawLeaders();
+      }
+      aframe.addEventListener('mousemove', e => {
+        const r = aframe.getBoundingClientRect();
+        aframe.style.setProperty('--mx', (((e.clientX - r.left) / r.width) * 2 - 1).toFixed(3));
+        aframe.style.setProperty('--my', (((e.clientY - r.top) / r.height) * 2 - 1).toFixed(3));
+      });
+      aframe.addEventListener('mouseleave', () => { aframe.style.setProperty('--mx', 0); aframe.style.setProperty('--my', 0); });
+      pins.forEach((pin, i) => {
+        pin.addEventListener('mouseenter', () => specs[i].classList.add('hot'));
+        pin.addEventListener('mouseleave', () => specs[i].classList.remove('hot'));
+        pin.addEventListener('click', () => {
+          specs[i].classList.toggle('hot');
+          if (isMobile()) specs[i].scrollIntoView({ behavior: REDUCE ? 'auto' : 'smooth', block: 'center' });
+        });
+      });
+      railBtns.forEach(b => b.addEventListener('click', () => {
+        const targets = [.42, .72, .98], total = anat.offsetHeight - innerHeight;
+        scrollTo({ top: anat.offsetTop + total * targets[+b.dataset.go], behavior: REDUCE ? 'auto' : 'smooth' });
+      }));
+
+      /* ---------------- manifesto ---------------- */
+      const statement = $('#statement'), words = [];
+      $$('.ln', statement).forEach(ln => {
+        ln.innerHTML = ln.textContent.trim().split(/\s+/).map(w => `<span class="w">${w}</span>`).join(' ');
+        words.push(...$$('.w', ln));
+      });
+      const C0 = [208, 208, 204], C1 = [17, 17, 17];
+      function setFill(p) {
+        const head = p * (words.length + 3);
+        words.forEach((w, i) => {
+          const v = Math.round(clamp((head - i) / 3) * 100) / 100;
+          if (w._v === v) return; w._v = v;
+          w.style.color = `rgb(${C0.map((c, k) => Math.round(lerp(c, C1[k], v))).join(',')})`;
+        });
+      }
+
+      /* ---------------- trust ---------------- */
+      $('#avGrid').innerHTML = AVATARS.map((src, i) => `<img class="av" src="${src}" alt="RETROMOD. collector ${i + 1}" width="240" height="240" loading="lazy" draggable="false">`).join('');
+      $$('.av').forEach(im => im.addEventListener('error', () => { im.classList.add('missing'); im.src = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='; }, { once: true }));
+      (() => {
+        let s = '';
+        for (let i = 0; i < 24; i++) {
+          const a = (i / 24) * Math.PI * 2, r2 = i % 3 === 0 ? 20 : i % 3 === 1 ? 14 : 16.5;
+          s += `<line x1="${(22 + Math.cos(a) * 5).toFixed(2)}" y1="${(22 + Math.sin(a) * 5).toFixed(2)}" x2="${(22 + Math.cos(a) * r2).toFixed(2)}" y2="${(22 + Math.sin(a) * r2).toFixed(2)}"/>`;
+        }
+        $('#starTile').innerHTML = `<g stroke="#111" stroke-width="1.3" stroke-linecap="round">${s}</g><circle cx="22" cy="22" r="3" fill="#111"/>`;
+        let leaves = '';
+        for (const side of [-1, 1]) for (let k = 0; k < 7; k++) {
+          const deg = 90 + side * (28 + k * 19), a = deg * Math.PI / 180, x = 60 + Math.cos(a) * 26, y = 60 + Math.sin(a) * 26;
+          leaves += `<ellipse cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" rx="5.2" ry="2.1" transform="rotate(${(deg + 90 + side * 28).toFixed(1)} ${x.toFixed(2)} ${y.toFixed(2)})"/>`;
+        }
+        $('#seal').innerHTML = `<defs><path id="sealPath" d="M60 60m-45 0a45 45 0 1 1 90 0a45 45 0 1 1-90 0"/></defs>
+    <circle cx="60" cy="60" r="57" fill="none" stroke="rgba(255,255,255,.35)"/><circle cx="60" cy="60" r="36" fill="none" stroke="rgba(255,255,255,.35)"/>
+    <text fill="#fff" font-family="Inter Tight, sans-serif" font-size="8.4" font-weight="600" letter-spacing="1.6"><textPath href="#sealPath" textLength="276">NORWOOD · JOHANNESBURG · EST. ARCHIVE · </textPath></text>
+    <g fill="rgba(255,255,255,.85)">${leaves}</g>
+    <text x="60" y="64" text-anchor="middle" fill="#fff" font-family="Inter Tight, sans-serif" font-weight="800" font-size="10.5" letter-spacing="-.4">RETROMOD.</text>`;
+      })();
+      function countUp(el, dur = 1400) {
+        const to = parseFloat(el.dataset.to), dec = +(el.dataset.dec || 0), suf = el.dataset.suffix || '', f = v => v.toFixed(dec) + suf;
+        if (REDUCE) { el.textContent = f(to); return; }
+        const t0 = performance.now();
+        const step = now => { const t = clamp((now - t0) / dur); el.textContent = f(to * (1 - Math.pow(1 - t, 3))); if (t < 1) requestAnimationFrame(step); };
+        requestAnimationFrame(step);
+      }
+      let trustDone = false;
+      function runTrust() {
+        if (trustDone) return; trustDone = true;
+        $$('.tpanel .count').forEach(el => countUp(el));
+        if (REDUCE) return;
+        $$('.av').forEach((a, i) => a.animate([{ transform: 'scale(.7)', opacity: 0 }, { transform: 'scale(1)', opacity: 1 }], { duration: 500, delay: 100 + i * 50, easing: EASE, fill: 'backwards' }));
+      }
+      if (!REC) new IntersectionObserver((ents, io) => ents.forEach(en => { if (en.isIntersecting) { runTrust(); io.disconnect(); } }), { threshold: .3 }).observe($('#tpanel'));
+
+      /* ---------------- scroll loop ---------------- */
+      let ticking = false;
+      function frameUpdate() {
+        ticking = false;
+        if (REC) return;
+        const vh = innerHeight, r = anat.getBoundingClientRect();
+        setAnat(clamp(-r.top / Math.max(1, anat.offsetHeight - vh)));
+        if (!REDUCE) { const s = statement.getBoundingClientRect(); setFill(clamp((vh * .85 - s.top) / (s.height + vh * .35))); }
+      }
+      const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(frameUpdate); } };
+      addEventListener('scroll', onScroll, { passive: true });
+      addEventListener('resize', onScroll);
+      mqMobile.addEventListener('change', onScroll);
+      if (REDUCE) setFill(1);
+      frameUpdate();
+
+      /* ---------------- recorder mode (?rec=1): deterministic 0–6 s ---------------- */
+      if (REC) {
+        document.documentElement.classList.add('is-rec');
+        runTrust();
+        const t0 = performance.now();
+        const loop = now => {
+          const t = clamp((now - t0) / 1000, 0, 6);
+          if (items.length) { const want = Math.min(items.length - 1, Math.floor(t / 1.5)); if (want !== cur) go(want); elapsed = t >= 6 ? AUTO_MS : ((t % 1.5) / 1.5) * AUTO_MS; }
+          setAnat(clamp((t - .4) / 4.6));
+          setFill(clamp((t - 1.2) / 4.2));
+          if (t < 6) requestAnimationFrame(loop);
+        };
+        requestAnimationFrame(loop);
+      }
+    })();
+  </script>
+</body>
+
+</html>

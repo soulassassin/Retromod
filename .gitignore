@@ -30,8 +30,15 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# env files
 .env*
+!.env.example
+
+# runtime store data (data/seed-catalog.json stays tracked)
+/data/catalog.json
+/data/orders.json
+/data/import-logs.json
+/data/media/
 
 # vercel
 .vercel

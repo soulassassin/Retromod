@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Admin Console — RETROMOD.</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#FAFAFA">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@100..900&family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css">
+<link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body data-page="admin">
+
+<header class="site-header">
+  <div class="board hdr">
+    <div class="adm-brand">
+      <a class="logo" href="index.html" aria-label="RETROMOD. — storefront home">RETROMOD.</a>
+      <span class="eyebrow adm-tag">Studio Admin</span>
+    </div>
+    <div class="hdr-right">
+      <a class="btn btn--ghost" href="shop.html">Storefront <span class="arr" aria-hidden="true">↗</span></a>
+      <span class="adm-session-pill" id="sessionBadge" hidden><i class="dot dot--live" aria-hidden="true"></i> Signed in</span>
+      <button class="btn" type="button" id="logoutBtn" hidden>Log out</button>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="board adm-main">
+  <!-- Auth Gate -->
+  <section id="loginView" class="adm-login" aria-labelledby="loginTitle">
+    <div class="adm-login-card">
+      <span class="eyebrow">Restricted · Norwood Studio</span>
+      <h1 class="display adm-login-title" id="loginTitle">Admin Console.</h1>
+      <p class="muted adm-login-copy">Sign in to manage floor inventory, run assisted @retromod.za stock imports, and update customer orders.</p>
+      <form id="loginForm" class="adm-login-form" novalidate>
+        <div class="field">
+          <label for="adminPassword">Admin password</label>
+          <input class="input" id="adminPassword" name="password" type="password" autocomplete="current-password" required aria-label="Admin password">
+        </div>
+        <div id="loginError" class="adm-alert" role="alert" aria-live="assertive" hidden></div>
+        <button class="btn adm-submit" id="loginBtn" type="submit">Sign in <span class="arr" aria-hidden="true">→</span></button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Authenticated Workspace -->
+  <section id="workspaceView" class="adm-work" hidden>
+    <div class="adm-top">
+      <div>
+        <span class="eyebrow">66 Grant Avenue · Floor Operations</span>
+        <h1 class="display adm-title">Stock &amp; Orders.</h1>
+      </div>
+      <div class="adm-stats" id="admStats" aria-label="Storefront metrics">
+        <div class="adm-stat"><span class="eyebrow">Available</span><b id="statAvailable">0</b></div>
+        <div class="adm-stat"><span class="eyebrow">Reserved</span><b id="statReserved">0</b></div>
+        <div class="adm-stat"><span class="eyebrow">Sold</span><b id="statSold">0</b></div>
+        <div class="adm-stat"><span class="eyebrow">Total Units</span><b id="statUnits">0</b></div>
+        <div class="adm-stat"><span class="eyebrow">Floor Value</span><b id="statValue">R0</b></div>
+        <div class="adm-stat"><span class="eyebrow">Orders</span><b id="statOrders">0</b></div>
+      </div>
+    </div>
+
+    <div id="adminNotice" class="adm-notice" role="status" aria-live="polite" hidden></div>
+    <div id="adminAlert" class="adm-alert" role="alert" aria-live="assertive" hidden></div>
+
+    <div class="adm-tabs-wrap">
+      <div class="chips adm-tabs" role="tablist" aria-label="Admin sections">
+        <button class="chip on" type="button" role="tab" id="tab-inventory" aria-selected="true" aria-controls="panel-inventory" data-tab="inventory">Inventory <small id="tabCountInventory">0</small></button>
+        <button class="chip" type="button" role="tab" id="tab-import" aria-selected="false" aria-controls="panel-import" data-tab="import">Instagram Sync</button>
+        <button class="chip" type="button" role="tab" id="tab-orders" aria-selected="false" aria-controls="panel-orders" data-tab="orders">Orders <small id="tabCountOrders">0</small></button>
+      </div>
+    </div>
+
+    <!-- Tab 1: Inventory -->
+    <section id="panel-inventory" class="adm-panel" role="tabpanel" aria-labelledby="tab-inventory">
+      <div class="adm-toolbar">
+        <div class="field adm-grow">
+          <label for="invSearch" class="sr-only">Filter inventory</label>
+          <input id="invSearch" class="input" type="search" placeholder="Search title, maker, shortcode…" aria-label="Filter inventory">
+        </div>
+        <div class="field adm-filter-select">
+          <label for="invStatus" class="sr-only">Filter by status</label>
+          <select id="invStatus" class="input" aria-label="Filter by status">
+            <option value="all">All statuses</option>
+            <option value="available">Available</option>
+            <option value="reserved">Reserved</option>
+            <option value="sold">Sold</option>
+          </select>
+        </div>
+        <button type="button" class="btn btn--ghost" id="invRefreshBtn">Refresh</button>
+      </div>
+
+      <div id="invFeedback" class="adm-notice" role="status" aria-live="polite" hidden></div>
+      <div id="invError" class="adm-alert" role="alert" aria-live="assertive" hidden></div>
+
+      <div class="adm-table-wrap">
+        <table class="adm-table" aria-label="Catalog inventory">
+          <thead>
+            <tr>
+              <th>Piece</th>
+              <th>Title &amp; Meta</th>
+              <th>Category</th>
+              <th>Price (ZAR)</th>
+              <th>Qty</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="inventoryBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Tab 2: Assisted Instagram Import -->
+    <section id="panel-import" class="adm-panel" role="tabpanel" aria-label="Instagram Sync">
+      <div class="adm-card">
+        <div class="adm-card-head">
+          <div>
+            <span class="eyebrow">Step 1 · Source Input</span>
+            <h2 class="adm-h2">Assisted @retromod.za Stock Import</h2>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <label for="importModeSelect" class="sr-only">Source mode</label>
+            <select id="importModeSelect" class="input" aria-label="Source mode" style="width:auto;height:38px">
+              <option value="urls">Instagram URLs</option>
+              <option value="export">Export JSON / CSV</option>
+              <option value="caption">Caption Paste</option>
+            </select>
+            <div class="chips adm-mode-chips" role="group" aria-label="Source format buttons">
+              <button type="button" class="chip on" data-import-mode="urls" aria-pressed="true">Instagram Post Links</button>
+              <button type="button" class="chip" data-import-mode="export" aria-pressed="false">Archive JSON / CSV</button>
+              <button type="button" class="chip" data-import-mode="caption" aria-pressed="false">Caption Paste</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="adm-mode-panel" data-mode-panel="all">
+          <div class="field" id="exportFileWrap" hidden style="margin-bottom:12px">
+            <label for="importExportFile">Upload archive file (.json or .csv)</label>
+            <input id="importExportFile" class="input adm-file" type="file" accept=".json,.csv,application/json,text/csv" aria-label="Upload archive file">
+          </div>
+          <div class="field">
+            <label for="importUrls" id="importInputLabel">Instagram post URLs or import payload</label>
+            <textarea id="importUrls" class="input" rows="5" aria-label="Instagram post URLs or import payload" placeholder="https://www.instagram.com/retromod.za/p/DfnF8-nkdJi/"></textarea>
+          </div>
+        </div>
+
+        <div class="adm-import-actions">
+          <label class="adm-check" for="importDownloadImages">
+            <input type="checkbox" id="importDownloadImages" checked aria-label="Download remote images locally">
+            <span>Download remote images to local media store</span>
+          </label>
+          <div class="adm-btn-row">
+            <button type="button" class="btn" id="previewImportBtn">Preview</button>
+            <button type="button" class="btn btn--ghost" id="clearImportBtn">Clear</button>
+          </div>
+        </div>
+
+        <div id="importError" class="adm-alert" role="alert" aria-live="assertive" hidden></div>
+        <div id="importStatus" class="adm-notice" role="status" aria-live="polite" hidden></div>
+      </div>
+
+      <div id="importPreviewSection" class="adm-card adm-preview-card" hidden>
+        <div class="adm-card-head">
+          <div>
+            <span class="eyebrow">Step 2 · Review, Edit &amp; Commit</span>
+            <h2 class="adm-h2">Preview Candidates</h2>
+          </div>
+          <div class="adm-btn-row">
+            <button type="button" class="btn btn--ghost" id="selectValidBtn">Select valid</button>
+            <button type="button" class="btn btn--ghost" id="deselectAllBtn">Deselect all</button>
+          </div>
+        </div>
+
+        <div id="importSummary" class="adm-summary" aria-live="polite"></div>
+        <div id="importPreviewBody" class="adm-preview-list"></div>
+
+        <div class="adm-commit-bar">
+          <span class="muted" id="commitSelectionCount">0 selected</span>
+          <button type="button" class="btn" id="commitImportBtn">Commit Selected</button>
+        </div>
+
+        <div id="importCommitReport" class="adm-commit-report" role="status" aria-live="polite" hidden></div>
+        <div id="importCommitErrors" class="adm-alert" role="alert" aria-live="assertive" hidden></div>
+      </div>
+    </section>
+
+    <!-- Tab 3: Orders -->
+    <section id="panel-orders" class="adm-panel" role="tabpanel" aria-labelledby="tab-orders">
+      <div class="adm-toolbar">
+        <div class="field adm-filter-select">
+          <label for="ordersStatusFilter" class="sr-only">Filter orders by status</label>
+          <select id="ordersStatusFilter" class="input" aria-label="Filter orders by status">
+            <option value="all">All order statuses</option>
+            <option value="pending">Pending</option>
+            <option value="pending_payment">Pending payment</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="paid">Paid</option>
+            <option value="ready_for_collection">Ready for collection</option>
+            <option value="dispatched">Dispatched</option>
+            <option value="shipped">Shipped</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+        <button type="button" class="btn btn--ghost" id="ordersRefreshBtn">Refresh</button>
+      </div>
+
+      <div class="adm-callout" role="note">
+        Changing an order status to <strong>Cancelled</strong> atomically restores its ordered item quantities back to floor stock.
+      </div>
+
+      <div id="ordersFeedback" class="adm-notice" role="status" aria-live="polite" hidden></div>
+      <div id="ordersError" class="adm-alert" role="alert" aria-live="assertive" hidden></div>
+
+      <div id="ordersBody" class="adm-orders-list"></div>
+    </section>
+  </section>
+</main>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script src="assets/js/admin.js"></script>
+</body>
+</html>

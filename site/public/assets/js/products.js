@@ -1,0 +1,106 @@
+/* =========================================================================
+   RETROMOD. — STOCK
+   Static fallback mirror of data/seed-catalog.json for offline/static preview.
+   Live server requests hydrate dynamically from catalog.json via /api/products
+   and /assets/js/products.js.
+   Source: instagram.com/retromod.za captions, read 17 Nov 2026.
+   ========================================================================= */
+window.RETROMOD = {
+  links: {
+    instagram: 'https://www.instagram.com/retromod.za/',
+    dm: 'https://ig.me/m/retromod.za',
+    whatsapp: 'https://chat.whatsapp.com/Fc2Pa0RQa6AKQJOeZNpmgM',
+    maps: 'https://www.google.com/maps/search/?api=1&query=66+Grant+Avenue+Norwood+Johannesburg+2192',
+    mapsEmbed: 'https://www.google.com/maps?q=66+Grant+Avenue,+Norwood,+Johannesburg+2192&z=16&output=embed'
+  },
+  address: ['66 Grant Avenue', 'Corner Nellie Road', 'Norwood, Johannesburg 2192'],
+  followers: 55.3, // thousands
+  posts: 471,
+
+  categories: [
+    { id: 'all', label: 'All' },
+    { id: 'audio', label: 'Audio' },
+    { id: 'lighting', label: 'Lighting' },
+    { id: 'cameras', label: 'Cameras' },
+    { id: 'furniture', label: 'Furniture' },
+    { id: 'art', label: 'Art' }
+  ],
+
+  products: [
+    {
+      id: 'marantz-twenty-nine',
+      title: 'Marantz Model Twenty Nine Stereo Receiver',
+      maker: 'Marantz', origin: 'USA', era: 'Circa early 1970s',
+      category: 'audio', price: 6950, quantity: 1, status: 'available', added: '2026-11-14',
+      image: 'assets/stock/marantz-twenty-nine.jpg',
+      instagramUrl: 'https://www.instagram.com/retromod.za/p/DfnF8-nkdJi/',
+      instagramShortcode: 'DfnF8-nkdJi',
+      lede: 'A seldom-seen vintage stereo receiver from the golden era of Marantz.',
+      body: [
+        'Beautifully engineered and renowned for its warm, rich and detailed sound, the Model Twenty Nine combines exceptional build quality with timeless brushed aluminium styling and classic analogue performance.'
+      ],
+      specs: [['Type', 'Stereo receiver'], ['Finish', 'Brushed aluminium'], ['Shipping', 'Nationwide']],
+      updatedAt: '2026-11-17T13:30:00.000Z'
+    },
+    {
+      id: 'pioneer-sa-6300',
+      title: 'Vintage Pioneer SA-6300 Stereo Amplifier',
+      maker: 'Pioneer', origin: 'Japan', era: 'Circa 1970s',
+      category: 'audio', price: 3950, quantity: 1, status: 'available', added: '2026-11-13',
+      image: 'assets/stock/pioneer-sa-6300.jpg',
+      instagramUrl: 'https://www.instagram.com/retromod.za/p/DfnHVD3kQvR/',
+      instagramShortcode: 'DfnHVD3kQvR',
+      lede: 'A beautifully crafted stereo amplifier with 20 watts RMS per channel of clean, dynamic sound.',
+      body: [
+        'Featuring a striking silver faceplate, precision controls and robust Japanese engineering, this amplifier offers an authentic vintage listening experience.'
+      ],
+      specs: [['Output', '20W RMS per channel'], ['Faceplate', 'Silver'], ['Shipping', 'Nationwide']],
+      updatedAt: '2026-11-17T13:30:00.000Z'
+    },
+    {
+      id: 'nad-3020i',
+      title: 'NAD 3020i Stereo Integrated Amplifier',
+      maker: 'NAD', origin: '', era: 'Circa early 1990s',
+      category: 'audio', price: 3750, quantity: 1, status: 'available', added: '2026-11-12',
+      image: 'assets/stock/nad-3020i.jpg',
+      instagramUrl: 'https://www.instagram.com/retromod.za/p/DfnIlytkcNS/',
+      instagramShortcode: 'DfnIlytkcNS',
+      lede: 'A legendary amplifier from one of the most celebrated series in hi-fi history.',
+      body: [
+        'The NAD 3020i delivers an impressive, full-bodied sound. Renowned for its musicality, excellent dynamics and understated design, this amplifier perfectly demonstrates NAD’s philosophy of prioritising sound quality over unnecessary frills.'
+      ],
+      specs: [['Type', 'Integrated amplifier'], ['Series', '3020'], ['Shipping', 'Nationwide']],
+      updatedAt: '2026-11-17T13:30:00.000Z'
+    },
+    {
+      id: 'kartell-taj-lamp',
+      title: 'Kartell Taj Table Lamp in Clear',
+      maker: 'Kartell · Ferruccio Laviani', origin: 'Italy', era: 'Circa 2012',
+      category: 'lighting', price: 3850, quantity: 1, status: 'available', added: '2026-11-11',
+      image: 'assets/stock/kartell-taj-lamp.jpg',
+      instagramUrl: 'https://www.instagram.com/retromod.za/p/DfnJqn-kduJ/',
+      instagramShortcode: 'DfnJqn-kduJ',
+      lede: 'The iconic Kartell Taj — elegant, flowing curves in transparent PMMA with modern LED technology.',
+      body: [
+        'Designed by Ferruccio Laviani, the Taj combines sculptural beauty with modern LED technology. A timeless statement piece that effortlessly blends art and functionality.'
+      ],
+      specs: [['Designer', 'Ferruccio Laviani'], ['Material', 'Transparent PMMA'], ['Light', 'Integrated LED'], ['Size', '350mm (H)']],
+      updatedAt: '2026-11-17T13:30:00.000Z'
+    },
+    {
+      id: 'fujifilm-x100v',
+      title: 'Fujifilm X100V Premium Digital Camera',
+      maker: 'Fujifilm', origin: 'Japan', era: 'Circa 2020',
+      category: 'cameras', price: 28950, quantity: 1, status: 'available', added: '2026-11-10',
+      image: 'assets/stock/fujifilm-x100v.jpg',
+      instagramUrl: 'https://www.instagram.com/retromod.za/p/DfnEsmxkXdf/',
+      instagramShortcode: 'DfnEsmxkXdf',
+      lede: 'A modern classic — vintage-inspired styling with exceptional Japanese engineering.',
+      body: [
+        'Celebrated by photographers and enthusiasts worldwide, the X100V has become one of Fujifilm’s most desirable digital cameras, combining old-school charm with outstanding modern performance.'
+      ],
+      specs: [['Condition', 'Used, like new'], ['Type', 'Premium compact'], ['Shipping', 'Nationwide']],
+      updatedAt: '2026-11-17T13:30:00.000Z'
+    }
+  ]
+};

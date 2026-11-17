@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Checkout — RETROMOD. · Norwood, Johannesburg</title>
+<meta name="description" content="Complete your RETROMOD. order for Norwood showroom collection or nationwide South African courier delivery.">
+<meta name="theme-color" content="#FAFAFA">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@100..900&family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css">
+<style>
+.co-wrap{padding:calc(36*var(--u)) var(--side) calc(120*var(--u))}
+.co-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(320px,.85fr);gap:calc(36*var(--u));align-items:start}
+.co-card{background:#fff;border:1px solid var(--line);border-radius:calc(14*var(--u));padding:calc(32*var(--u));min-width:0}
+.co-card + .co-card{margin-top:calc(18*var(--u))}
+.co-sec{border:0;margin:0;padding:0;min-width:0}
+.co-sec + .co-sec{margin-top:calc(28*var(--u));padding-top:calc(28*var(--u));border-top:1px solid var(--line)}
+.co-sec[hidden]{display:none}
+.co-sec legend{font-family:var(--display);font-stretch:104%;font-weight:640;font-size:calc(26*var(--u));line-height:1.05;letter-spacing:-.04em;margin-bottom:calc(16*var(--u));display:block;width:100%}
+.co-fields{display:grid;grid-template-columns:1fr 1fr;gap:calc(16*var(--u))}
+.co-fields .full{grid-column:1/-1}
+.co-summary{position:sticky;top:calc(var(--hdr) + 20*var(--u));background:#fff;border:1px solid var(--line);border-radius:calc(14*var(--u));padding:calc(28*var(--u));min-width:0}
+.co-summary h2{font-family:var(--display);font-stretch:104%;font-weight:640;font-size:calc(28*var(--u));letter-spacing:-.04em;line-height:1;margin-bottom:calc(18*var(--u))}
+.co-items{display:flex;flex-direction:column;gap:calc(12*var(--u));padding-bottom:calc(18*var(--u));border-bottom:1px solid var(--line)}
+.co-item{display:grid;grid-template-columns:60px minmax(0,1fr) auto;gap:12px;align-items:center;padding:8px;border-radius:10px;border:1px solid transparent}
+.co-item.is-conflict{border-color:#b42318;background:rgba(180,35,24,.05)}
+.co-item-img{width:60px;aspect-ratio:4/5;border-radius:8px;overflow:hidden;background:var(--stone)}
+.co-item-img img{width:100%;height:100%;object-fit:cover}
+.co-item-title{font:600 calc(14*var(--u))/1.25 var(--ui);overflow-wrap:anywhere}
+.co-item-meta{margin-top:4px;font:500 calc(12*var(--u))/1.3 var(--ui);color:var(--muted)}
+.co-item-price{font:600 calc(14*var(--u))/1 var(--ui);font-variant-numeric:tabular-nums;white-space:nowrap}
+.co-totals{display:flex;flex-direction:column;gap:calc(10*var(--u));padding:calc(18*var(--u)) 0;border-bottom:1px solid var(--line)}
+.co-tot-row{display:flex;justify-content:space-between;align-items:baseline;font:500 calc(14*var(--u))/1.3 var(--ui);color:var(--body)}
+.co-tot-row b{font-variant-numeric:tabular-nums;color:var(--ink)}
+.co-tot-grand{display:flex;justify-content:space-between;align-items:baseline;padding-top:calc(16*var(--u))}
+.co-tot-grand span{font:500 calc(12*var(--u))/1 var(--ui);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.co-tot-grand b{font-family:var(--display);font-stretch:110%;font-weight:640;font-size:calc(34*var(--u));letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.co-submit-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:calc(28*var(--u))}
+.co-submit-row .btn{height:calc(52*var(--u));padding:0 calc(28*var(--u));font-size:calc(15*var(--u))}
+.co-submit-note{font:500 calc(12.5*var(--u))/1.45 var(--ui);color:var(--muted);max-width:calc(360*var(--u))}
+.co-empty{text-align:center;padding:calc(80*var(--u)) calc(24*var(--u));background:#fff;border:1px dashed var(--line-2);border-radius:calc(14*var(--u))}
+.co-empty h2{font-family:var(--display);font-stretch:104%;font-weight:640;font-size:calc(44*var(--u));letter-spacing:-.05em}
+.co-empty p{margin:calc(14*var(--u)) auto calc(26*var(--u));max-width:calc(400*var(--u));font:500 calc(15*var(--u))/1.5 var(--ui);color:var(--muted)}
+
+/* Receipt view */
+.rc-card{max-width:920px;margin:0 auto;background:#fff;border:1px solid var(--line);border-radius:calc(14*var(--u));padding:calc(40*var(--u))}
+.rc-head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;padding-bottom:calc(24*var(--u));border-bottom:1px solid var(--line)}
+.rc-ref{font-family:var(--display);font-stretch:104%;font-weight:640;font-size:calc(44*var(--u));line-height:.95;letter-spacing:-.045em;margin-top:calc(10*var(--u))}
+.rc-pill{display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 14px;border-radius:999px;background:rgba(31,138,76,.1);color:#14532d;font:600 12px/1 var(--ui);letter-spacing:.08em;text-transform:uppercase}
+.rc-pill i{width:7px;height:7px;border-radius:50%;background:#1f8a4c}
+.rc-grid{display:grid;grid-template-columns:1fr 1fr;gap:calc(24*var(--u));padding:calc(24*var(--u)) 0;border-bottom:1px solid var(--line)}
+.rc-block h3{font:500 calc(11*var(--u))/1 var(--ui);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:calc(8*var(--u))}
+.rc-block p{font:500 calc(14.5*var(--u))/1.55 var(--ui);color:var(--ink)}
+.rc-inst{margin-top:calc(20*var(--u));padding:calc(18*var(--u));border-radius:calc(12*var(--u));background:var(--paper);border:1px solid var(--line)}
+.rc-inst h3{font:600 calc(15*var(--u))/1.3 var(--ui);margin-bottom:6px}
+.rc-inst p{font:500 calc(13.5*var(--u))/1.5 var(--ui);color:var(--body)}
+.rc-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:calc(26*var(--u))}
+
+@media (max-width:1024px){
+  .co-grid{grid-template-columns:1fr;gap:24px}
+  .co-summary{position:static}
+}
+@media (max-width:760px){
+  .co-wrap{padding:24px 16px 64px}
+  .co-card,.co-summary,.rc-card{padding:20px 16px;border-radius:12px}
+  .co-sec + .co-sec{margin-top:22px;padding-top:22px}
+  .co-sec legend{font-size:24px;margin-bottom:14px}
+  .co-fields{grid-template-columns:1fr;gap:14px}
+  .co-summary h2{font-size:26px;margin-bottom:14px}
+  .co-item-title{font-size:14px}.co-item-meta{font-size:12px}.co-item-price{font-size:14px}
+  .co-tot-row{font-size:14px}
+  .co-tot-grand b{font-size:30px}
+  .co-submit-row .btn{width:100%;height:50px;font-size:15px}
+  .co-submit-note{max-width:none;font-size:12.5px}
+  .co-empty{padding:48px 16px}
+  .co-empty h2{font-size:32px}
+  .co-empty p{font-size:14.5px}
+  .rc-ref{font-size:30px}
+  .rc-grid{grid-template-columns:1fr;gap:16px}
+  .rc-block h3{font-size:11px}.rc-block p{font-size:14px}
+  .rc-inst h3{font-size:15px}.rc-inst p{font-size:13.5px}
+  .rc-actions .btn{flex:1 1 auto}
+}
+</style>
+</head>
+<body data-page="checkout">
+
+<header class="site-header">
+  <div class="board hdr">
+    <a class="logo" href="index.html" aria-label="RETROMOD. — home">RETROMOD.</a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <span class="nav-ind" aria-hidden="true"></span>
+      <a href="index.html" data-page="home">Home</a>
+      <a href="about.html" data-page="about">About</a>
+      <a href="shop.html" data-page="shop">Shop</a>
+      <a href="contact.html" data-page="contact">Contact</a>
+    </nav>
+    <div class="hdr-right">
+      <button type="button" class="bag-btn" id="bagBtn" data-cart-open aria-controls="cartDrawer" aria-expanded="false" aria-label="Shopping bag (0 items)">
+        <span class="bag-lbl">Bag</span>
+        <span class="bag-count is-empty" data-cart-count>0</span>
+      </button>
+      <a class="btn hdr-cta" data-dm>DM to Enquire <span class="arr">↗</span></a>
+      <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="mnav" aria-label="Open menu"><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="mnav" id="mnav">
+    <a class="ml" href="index.html" data-page="home">Home <small>01</small></a>
+    <a class="ml" href="about.html" data-page="about">About <small>02</small></a>
+    <a class="ml" href="shop.html" data-page="shop">Shop <small>03</small></a>
+    <a class="ml" href="contact.html" data-page="contact">Contact <small>04</small></a>
+    <a class="ml" href="checkout.html" data-page="checkout">Bag &amp; Checkout <small data-cart-count>0</small></a>
+    <a class="btn" data-dm>DM to Enquire <span class="arr">↗</span></a>
+    <p class="mnav-foot">66 Grant Avenue, Corner Nellie Road<br>Norwood, Johannesburg · Nationwide shipping</p>
+  </div>
+</header>
+
+<main>
+  <section class="board page-hero">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span>/</span><a href="shop.html">Shop</a><span>/</span><span>Checkout</span></nav>
+    <h1 class="display" id="coHeroTitle">Checkout.</h1>
+    <div class="page-hero-row">
+      <p class="lead" id="coHeroLead">Reserve your piece immediately. Collect free at 66 Grant Avenue, Norwood or choose flat-rate nationwide South African courier delivery.</p>
+    </div>
+  </section>
+
+  <section class="board co-wrap">
+    <div id="checkoutAlert" class="alert" role="alert" aria-live="polite" hidden></div>
+
+    <div id="checkoutEmpty" class="co-empty" hidden>
+      <h2>Your bag is empty.</h2>
+      <p>Browse everything currently on the floor in Norwood and add a piece to your bag to check out.</p>
+      <a class="btn" href="shop.html">Browse the shop <span class="arr">↗</span></a>
+    </div>
+
+    <div id="checkoutView" class="co-grid" hidden>
+      <form id="checkoutForm" class="co-card" novalidate>
+        <fieldset class="co-sec">
+          <legend>01 · Your details</legend>
+          <div class="co-fields">
+            <div class="field full">
+              <label for="coName">Full name</label>
+              <input id="coName" name="name" class="input" autocomplete="name" aria-label="Full name" placeholder="e.g. Thandi Mokoena" required>
+              <span class="err" id="errName" role="alert"></span>
+            </div>
+            <div class="field">
+              <label for="coEmail">Email</label>
+              <input id="coEmail" name="email" type="email" class="input" autocomplete="email" aria-label="Email" placeholder="thandi@example.co.za" required>
+              <span class="err" id="errEmail" role="alert"></span>
+            </div>
+            <div class="field">
+              <label for="coPhone">Phone / WhatsApp</label>
+              <input id="coPhone" name="phone" type="tel" class="input" autocomplete="tel" aria-label="Phone or WhatsApp number" placeholder="+27 82 555 0199" required>
+              <span class="err" id="errPhone" role="alert"></span>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="co-sec">
+          <legend>02 · Fulfillment</legend>
+          <div class="choice-grid">
+            <label class="choice on" for="fulCollection">
+              <input type="radio" id="fulCollection" name="fulfillment" value="collection" aria-label="Collect in Norwood (Free)" checked>
+              <div>
+                <b>Collect in Norwood (Free)</b>
+                <span>66 Grant Ave, Cnr Nellie Rd · JHB 2192</span>
+              </div>
+            </label>
+            <label class="choice" for="fulDelivery">
+              <input type="radio" id="fulDelivery" name="fulfillment" value="delivery" aria-label="Nationwide SA Courier Delivery (R250)">
+              <div>
+                <b>Nationwide Courier (R250)</b>
+                <span>Flat-rate insured shipping across South Africa</span>
+              </div>
+            </label>
+          </div>
+          <span class="err" id="errFulfillment" role="alert"></span>
+        </fieldset>
+
+        <fieldset class="co-sec" id="shippingFields" hidden>
+          <legend>03 · Delivery address</legend>
+          <div class="co-fields">
+            <div class="field full">
+              <label for="coStreet">Street address</label>
+              <input id="coStreet" name="street" class="input" autocomplete="street-address" aria-label="Street address" placeholder="14 Kloof Street">
+              <span class="err" id="errStreet" role="alert"></span>
+            </div>
+            <div class="field">
+              <label for="coSuburb">Suburb</label>
+              <input id="coSuburb" name="suburb" class="input" aria-label="Suburb" placeholder="Gardens">
+              <span class="err" id="errSuburb" role="alert"></span>
+            </div>
+            <div class="field">
+              <label for="coCity">City</label>
+              <input id="coCity" name="city" class="input" autocomplete="address-level2" aria-label="City" placeholder="Cape Town">
+              <span class="err" id="errCity" role="alert"></span>
+            </div>
+            <div class="field">
+              <label for="coProvince">Province</label>
+              <input id="coProvince" name="province" list="provinceList" class="input" autocomplete="address-level1" aria-label="Province" placeholder="e.g. Western Cape">
+              <datalist id="provinceList">
+                <option value="Gauteng"></option>
+                <option value="Western Cape"></option>
+                <option value="KwaZulu-Natal"></option>
+                <option value="Eastern Cape"></option>
+                <option value="Free State"></option>
+                <option value="Limpopo"></option>
+                <option value="Mpumalanga"></option>
+                <option value="North West"></option>
+                <option value="Northern Cape"></option>
+              </datalist>
+              <span class="err" id="errProvince" role="alert"></span>
+            </div>
+            <div class="field">
+              <label for="coPostal">Postal code</label>
+              <input id="coPostal" name="postalCode" class="input" inputmode="numeric" maxlength="4" autocomplete="postal-code" aria-label="Postal code" placeholder="8001">
+              <span class="err" id="errPostalCode" role="alert"></span>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="co-sec">
+          <legend>Payment method</legend>
+          <div class="choice-grid">
+            <label class="choice on" for="payEft">
+              <input type="radio" id="payEft" name="paymentMethod" value="eft" aria-label="EFT / Bank Transfer" checked>
+              <div>
+                <b>EFT / Bank Transfer</b>
+                <span>Stock is reserved immediately; settle using your order reference.</span>
+              </div>
+            </label>
+            <label class="choice" for="payCollection" id="payCollectionLbl">
+              <input type="radio" id="payCollection" name="paymentMethod" value="pay_on_collection" aria-label="Pay on Collection">
+              <div>
+                <b>Pay on Collection</b>
+                <span>Settle by card or cash when you collect at 66 Grant Ave.</span>
+              </div>
+            </label>
+            <label class="choice" for="payCard" style="grid-column:1/-1">
+              <input type="radio" id="payCard" name="paymentMethod" value="card_order_request" aria-label="Card Payment Link">
+              <div>
+                <b>Card Payment Link</b>
+                <span>We reserve your piece now and send a secure Yoco / card payment link.</span>
+              </div>
+            </label>
+          </div>
+          <span class="err" id="errPaymentMethod" role="alert"></span>
+        </fieldset>
+
+        <fieldset class="co-sec">
+          <div class="field">
+            <label for="coNotes">Order notes (optional)</label>
+            <textarea id="coNotes" name="notes" class="input" rows="3" aria-label="Order notes" placeholder="Preferred collection time, gate code, or delivery instructions…"></textarea>
+            <span class="err" id="errNotes" role="alert"></span>
+          </div>
+        </fieldset>
+
+        <div class="co-submit-row">
+          <span class="co-submit-note">Placing an order atomically reserves your piece on the Norwood floor.</span>
+          <button type="submit" class="btn" id="placeOrderBtn">Place order <span class="arr">↗</span></button>
+        </div>
+      </form>
+
+      <aside class="co-summary" aria-label="Order summary">
+        <h2>Order summary</h2>
+        <ul class="co-items" id="summaryItems"></ul>
+        <div class="co-totals">
+          <div class="co-tot-row"><span>Subtotal</span><b id="sumSubtotal">R0</b></div>
+          <div class="co-tot-row"><span id="sumShipLabel">Norwood collection</span><b id="sumShipping">R0</b></div>
+        </div>
+        <div class="co-tot-grand">
+          <span>Total (ZAR)</span>
+          <b id="sumTotal">R0</b>
+        </div>
+      </aside>
+    </div>
+
+    <div id="receiptView" class="rc-card" hidden></div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="board ftr">
+    <div class="ftr-top">
+      <div class="ftr-brand">
+        <div class="ftr-word">RETROMOD.</div>
+        <p class="ftr-tag">Mid-Century Modern &amp; Beyond. Furniture • Art • Audio. Buyers and sellers — shipped nationwide from Norwood, Johannesburg.</p>
+      </div>
+      <div>
+        <h4>Visit</h4>
+        <address>66 Grant Avenue<br>Corner Nellie Road<br>Norwood, Johannesburg 2192</address>
+        <ul style="margin-top:calc(12*var(--u))"><li><a data-maps>Open in Maps ↗</a></li></ul>
+      </div>
+      <div>
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="shop.html">All stock</a></li>
+          <li><a href="shop.html?cat=audio">Audio</a></li>
+          <li><a href="shop.html?cat=lighting">Lighting</a></li>
+          <li><a href="shop.html?cat=cameras">Cameras</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Connect</h4>
+        <ul>
+          <li><a data-ig>Instagram @retromod.za</a></li>
+          <li><a data-dm>Send a DM</a></li>
+          <li><a data-wa>WhatsApp community</a></li>
+          <li><a href="about.html">About us</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="ftr-bot"><span>© <span data-year>2026</span> RETROMOD. All rights reserved.</span><span>Nationwide shipping · Norwood, Johannesburg</span></div>
+  </div>
+</footer>
+
+<script src="assets/js/products.js"></script>
+<script src="assets/js/site.js"></script>
+<script src="assets/js/cart.js"></script>
+<script src="assets/js/checkout.js"></script>
+</body>
+</html>

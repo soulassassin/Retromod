@@ -1,0 +1,23 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>html,body{margin:0;background:#ddd}iframe{display:block;border:0;background:#fff}</style>
+<iframe id="f"></iframe>
+<script>
+// Dev-only preview harness: /_frame.html?u=/&w=390&h=2600&sel=#anatomy&p=.45
+const q = new URLSearchParams(location.search);
+const f = document.getElementById('f');
+f.style.width = (q.get('w') || 390) + 'px';
+f.style.height = (q.get('h') || 2600) + 'px';
+f.onload = () => {
+  const w = f.contentWindow, d = w.document;
+  d.documentElement.style.scrollBehavior = 'auto';
+  const sel = q.get('sel');
+  if (sel) {
+    const el = d.querySelector(sel);
+    const p = parseFloat(q.get('p') || 0);
+    const span = Math.max(0, el.offsetHeight - w.innerHeight);
+    setTimeout(() => w.scrollTo(0, el.getBoundingClientRect().top + w.scrollY + span * p), 400);
+  }
+};
+f.src = q.get('u') || '/';
+</script>

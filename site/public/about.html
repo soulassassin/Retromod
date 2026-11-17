@@ -1,0 +1,663 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>About — RETROMOD. · Mid-Century Modern &amp; Beyond, Norwood</title>
+  <meta name="description"
+    content="RETROMOD. is a Norwood, Johannesburg showroom for mid-century modern furniture, art, lighting and vintage audio. Buyers and sellers, shipping nationwide.">
+  <meta name="theme-color" content="#FAFAFA">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@100..900&family=Archivo:wdth,wght@62..125,100..900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/site.css">
+  <style>
+    .page-hero-row {
+      margin-top: calc(28*var(--u))
+    }
+
+    .story {
+      display: grid;
+      grid-template-columns: calc(560*var(--u)) minmax(0, 1fr);
+      gap: calc(80*var(--u));
+      padding: calc(90*var(--u)) var(--side) calc(110*var(--u));
+      align-items: start
+    }
+
+    .story-img {
+      position: relative;
+      aspect-ratio: 4/5;
+      border-radius: calc(14*var(--u));
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: var(--stone)
+    }
+
+    .story-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover
+    }
+
+    .story-img figcaption {
+      position: absolute;
+      left: calc(14*var(--u));
+      bottom: calc(14*var(--u));
+      height: calc(30*var(--u));
+      padding: 0 calc(12*var(--u));
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .9);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      font: 500 calc(11.5*var(--u))/1 var(--ui)
+    }
+
+    .story-txt {
+      position: sticky;
+      top: calc(var(--hdr) + 40*var(--u));
+      min-width: 0
+    }
+
+    .story-txt h2 {
+      margin-top: calc(16*var(--u));
+      font-size: calc(56*var(--u))
+    }
+
+    .story-txt .big {
+      margin-top: calc(32*var(--u));
+      font: 500 calc(24*var(--u))/1.4 var(--ui);
+      letter-spacing: -.02em;
+      text-wrap: pretty
+    }
+
+    .story-txt p.body {
+      margin-top: calc(18*var(--u));
+      max-width: calc(560*var(--u));
+      font: 500 calc(15.5*var(--u))/1.6 var(--ui);
+      color: var(--body);
+      text-wrap: pretty
+    }
+
+    .facts {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-top: calc(44*var(--u));
+      border-top: 1px solid var(--line)
+    }
+
+    .fact {
+      padding: calc(22*var(--u)) calc(18*var(--u)) 0 0
+    }
+
+    .fact+.fact {
+      padding-left: calc(18*var(--u));
+      border-left: 1px solid var(--line)
+    }
+
+    .fact b {
+      display: block;
+      font-family: var(--display);
+      font-stretch: 110%;
+      font-weight: 640;
+      font-size: calc(38*var(--u));
+      line-height: .9;
+      letter-spacing: -.05em;
+      font-variant-numeric: tabular-nums
+    }
+
+    .fact span {
+      display: block;
+      margin-top: calc(10*var(--u));
+      font: 500 calc(12.5*var(--u))/1.4 var(--ui);
+      color: var(--muted)
+    }
+
+    .deal {
+      background: #fff;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: calc(110*var(--u)) 0
+    }
+
+    .deal .board {
+      padding: 0 var(--side)
+    }
+
+    .deal-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: calc(12*var(--u))
+    }
+
+    .deal-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: calc(48*var(--u));
+      min-height: calc(250*var(--u));
+      padding: calc(22*var(--u));
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: calc(12*var(--u));
+      transition: transform 250ms var(--ease-out), background-color 200ms ease, box-shadow 250ms var(--ease-out)
+    }
+
+    .deal-card:active {
+      transform: scale(.98)
+    }
+
+    .deal-card svg {
+      width: calc(52*var(--u));
+      height: calc(52*var(--u))
+    }
+
+    .deal-card h3 {
+      font: 600 calc(19*var(--u))/1.2 var(--ui);
+      letter-spacing: -.02em
+    }
+
+    .deal-card p {
+      margin-top: calc(6*var(--u));
+      font: 500 calc(13*var(--u))/1.45 var(--ui);
+      color: var(--muted)
+    }
+
+    .deal-card .go {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: calc(14*var(--u));
+      font: 500 calc(12*var(--u))/1 var(--ui);
+      letter-spacing: .06em;
+      text-transform: uppercase
+    }
+
+    @media (hover:hover) {
+      .deal-card:hover {
+        transform: translateY(calc(-4*var(--u)));
+        background: #fff;
+        box-shadow: 0 18px 40px rgba(0, 0, 0, .06)
+      }
+    }
+
+    .values {
+      padding: calc(110*var(--u)) var(--side)
+    }
+
+    .vals {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: calc(12*var(--u))
+    }
+
+    .val {
+      padding: calc(28*var(--u));
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: calc(12*var(--u))
+    }
+
+    .val b {
+      font: 500 calc(11*var(--u))/1 var(--ui);
+      letter-spacing: .14em;
+      color: var(--muted)
+    }
+
+    .val h3 {
+      margin-top: calc(40*var(--u));
+      font-family: var(--display);
+      font-stretch: 104%;
+      font-weight: 640;
+      font-size: calc(30*var(--u));
+      line-height: 1;
+      letter-spacing: -.045em
+    }
+
+    .val p {
+      margin-top: calc(12*var(--u));
+      font: 500 calc(14.5*var(--u))/1.55 var(--ui);
+      color: var(--muted)
+    }
+
+    .sell {
+      padding: 0 var(--side) calc(120*var(--u))
+    }
+
+    .visit {
+      padding: 0 var(--side) calc(120*var(--u))
+    }
+
+    .visit-card {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: calc(40*var(--u));
+      align-items: end;
+      padding: calc(48*var(--u));
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: calc(14*var(--u))
+    }
+
+    .visit-card h2 {
+      margin-top: calc(14*var(--u));
+      font-size: calc(52*var(--u))
+    }
+
+    .visit-card address {
+      margin-top: calc(18*var(--u));
+      font: 500 calc(16*var(--u))/1.5 var(--ui);
+      font-style: normal;
+      color: var(--muted)
+    }
+
+    .visit-card .ctas {
+      display: flex;
+      gap: calc(10*var(--u));
+      flex-wrap: wrap
+    }
+
+    @media (max-width:1024px) {
+      .story {
+        grid-template-columns: 1fr 1fr;
+        gap: 36px;
+        padding: 56px var(--side) 72px
+      }
+
+      .deal-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr))
+      }
+
+      .visit-card {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        padding: 36px 32px
+      }
+    }
+
+    @media (max-width:760px) {
+      .page-hero-row {
+        margin-top: 18px
+      }
+
+      .story {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        padding: 36px 16px 56px
+      }
+
+      .story-txt {
+        position: static
+      }
+
+      .story-txt h2 {
+        margin-top: 10px;
+        font-size: clamp(34px, 10vw, 42px)
+      }
+
+      .story-txt .big {
+        font-size: 19px;
+        margin-top: 18px
+      }
+
+      .story-txt p.body {
+        margin-top: 14px;
+        font-size: 15px;
+        max-width: none
+      }
+
+      .story-img {
+        border-radius: 12px
+      }
+
+      .story-img figcaption {
+        font-size: 11.5px;
+        height: 30px;
+        padding: 0 12px;
+        left: 12px;
+        bottom: 12px
+      }
+
+      .facts {
+        margin-top: 28px
+      }
+
+      .fact {
+        padding: 16px 8px 0 0
+      }
+
+      .fact+.fact {
+        padding-left: 10px
+      }
+
+      .fact b {
+        font-size: clamp(24px, 7.2vw, 30px)
+      }
+
+      .fact span {
+        margin-top: 6px;
+        font-size: 12px
+      }
+
+      .deal {
+        padding: 56px 0
+      }
+
+      .deal .board {
+        padding: 0 16px
+      }
+
+      .deal-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px
+      }
+
+      .deal-card {
+        min-height: 190px;
+        padding: 16px;
+        gap: 24px;
+        border-radius: 12px
+      }
+
+      .deal-card:last-child {
+        grid-column: 1/-1;
+        min-height: 0
+      }
+
+      .deal-card svg {
+        width: 42px;
+        height: 42px
+      }
+
+      .deal-card h3 {
+        font-size: 17px
+      }
+
+      .deal-card p {
+        margin-top: 4px;
+        font-size: 13px
+      }
+
+      .deal-card .go {
+        margin-top: 12px;
+        font-size: 11px
+      }
+
+      .values {
+        padding: 56px 16px
+      }
+
+      .vals {
+        grid-template-columns: 1fr;
+        gap: 10px
+      }
+
+      .val {
+        padding: 20px;
+        border-radius: 12px
+      }
+
+      .val b {
+        font-size: 11px
+      }
+
+      .val h3 {
+        margin-top: 20px;
+        font-size: 26px
+      }
+
+      .val p {
+        margin-top: 8px;
+        font-size: 14.5px
+      }
+
+      .sell,
+      .visit {
+        padding: 0 16px 64px
+      }
+
+      .visit-card {
+        grid-template-columns: 1fr;
+        padding: 24px 20px;
+        gap: 20px;
+        border-radius: 12px
+      }
+
+      .visit-card h2 {
+        margin-top: 10px;
+        font-size: clamp(32px, 9.5vw, 38px)
+      }
+
+      .visit-card address {
+        margin-top: 12px;
+        font-size: 15px
+      }
+
+      .visit-card .ctas {
+        width: 100%
+      }
+
+      .visit-card .ctas .btn {
+        flex: 1 1 auto
+      }
+    }
+
+    @media (max-width:359px) {
+      .deal-grid {
+        grid-template-columns: 1fr
+      }
+    }
+  </style>
+</head>
+
+<body data-page="about">
+
+  <header class="site-header">
+    <div class="board hdr">
+      <a class="logo" href="index.html" aria-label="RETROMOD. — home">RETROMOD.</a>
+      <nav class="nav" id="nav" aria-label="Primary">
+        <span class="nav-ind" aria-hidden="true"></span>
+        <a href="index.html" data-page="home">Home</a>
+        <a href="about.html" data-page="about">About</a>
+        <a href="shop.html" data-page="shop">Shop</a>
+        <a href="contact.html" data-page="contact">Contact</a>
+      </nav>
+      <div class="hdr-right">
+        <button type="button" class="bag-btn" id="bagBtn" data-cart-open aria-controls="cartDrawer" aria-expanded="false" aria-label="Shopping bag (0 items)">
+          <span class="bag-lbl">Bag</span>
+          <span class="bag-count is-empty" data-cart-count>0</span>
+        </button>
+        <a class="btn hdr-cta" data-dm>DM to Enquire <span class="arr">↗</span></a>
+        <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="mnav"
+          aria-label="Open menu"><span></span><span></span></button>
+      </div>
+    </div>
+    <div class="mnav" id="mnav">
+      <a class="ml" href="index.html" data-page="home">Home <small>01</small></a>
+      <a class="ml" href="about.html" data-page="about">About <small>02</small></a>
+      <a class="ml" href="shop.html" data-page="shop">Shop <small>03</small></a>
+      <a class="ml" href="contact.html" data-page="contact">Contact <small>04</small></a>
+      <a class="ml" href="checkout.html" data-page="checkout">Bag &amp; Checkout <small data-cart-count>0</small></a>
+      <a class="btn" data-dm>DM to Enquire <span class="arr">↗</span></a>
+      <p class="mnav-foot">66 Grant Avenue, Corner Nellie Road<br>Norwood, Johannesburg · Nationwide shipping</p>
+    </div>
+  </header>
+
+  <main>
+    <section class="board page-hero">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span>/</span><span>About</span></nav>
+      <h1 class="display">Mid-Century<br>Modern &amp; Beyond.</h1>
+      <div class="page-hero-row">
+        <p class="lead">A Norwood showroom for furniture, art and audio with character. We buy, we sell, and we ship
+          across South Africa.</p>
+        <a class="btn" href="shop.html">Shop the floor <span class="arr">↗</span></a>
+      </div>
+    </section>
+
+    <section class="board story" aria-labelledby="storyTitle">
+      <figure class="story-img rv">
+        <img src="assets/stock/kartell-taj-lamp.jpg"
+          alt="Inside the RETROMOD. showroom: records, speakers and a Kartell Taj lamp" loading="lazy">
+        <figcaption>Inside the showroom · Grant Avenue</figcaption>
+      </figure>
+      <div class="story-txt">
+        <span class="eyebrow">(01) — Who we are</span>
+        <h2 class="display" id="storyTitle">Character,<br>not mass production.</h2>
+        <p class="big rv">RETROMOD. is where design-led pieces from the mid-century and beyond find their next home —
+          from Danish teak and Italian lighting to Japanese amplifiers and cameras.</p>
+        <p class="body rv">Everything on our floor is hand-selected. Each piece is photographed and described honestly,
+          with its maker, era and origin, before it goes live on Instagram — where our community of collectors,
+          designers and Hi-Fi lovers usually snaps it up within days.</p>
+        <p class="body rv">We're buyers as well as sellers. If you have a piece that deserves a second life, we'd love
+          to see it.</p>
+        <div class="facts rv">
+          <div class="fact"><b data-stock-count>5</b><span>Pieces on the floor</span></div>
+          <div class="fact"><b data-followers>55.3K</b><span>Instagram community</span></div>
+          <div class="fact"><b data-posts>471</b><span>Posts of pieces &amp; counting</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="deal" aria-labelledby="dealTitle">
+      <div class="board">
+        <div class="sec-head">
+          <div><span class="eyebrow">(02) — What we deal in</span>
+            <h2 class="display sec-title" id="dealTitle">Furniture • Art • Audio.</h2>
+          </div>
+          <p class="sec-intro">If it's well designed, well made and has a story, it belongs here.</p>
+        </div>
+        <div class="deal-grid" id="dealGrid"></div>
+      </div>
+    </section>
+
+    <section class="board values" aria-labelledby="valTitle">
+      <div class="sec-head">
+        <div><span class="eyebrow">(03) — How we work</span>
+          <h2 class="display sec-title" id="valTitle">Our standards.</h2>
+        </div>
+      </div>
+      <div class="vals">
+        <div class="val rv"><b>01</b>
+          <h3>Hand-selected</h3>
+          <p>We only take on pieces we'd want in our own homes — designed with intent and built to last.</p>
+        </div>
+        <div class="val rv" style="--d:80ms"><b>02</b>
+          <h3>Described honestly</h3>
+          <p>Maker, era, origin, condition and price, upfront in every listing. No surprises when it arrives.</p>
+        </div>
+        <div class="val rv" style="--d:160ms"><b>03</b>
+          <h3>Made to be used</h3>
+          <p>Audio is listened to, lamps are switched on, and furniture is meant to be lived with — not just looked at.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="board sell">
+      <div class="band rv">
+        <div>
+          <span class="eyebrow">Buyers and sellers</span>
+          <h2 class="display">Have a piece<br>to sell?</h2>
+        </div>
+        <div>
+          <p>We buy mid-century furniture, art, lighting, vintage Hi-Fi and cameras. Send a few photos and any history
+            you know, and we'll come back to you.</p>
+          <div class="ctas">
+            <button class="btn btn--white"
+              data-enquire="Hi RETROMOD., I have a piece I'd like to sell. Photos and details below:">Sell to us <span
+                class="arr">↗</span></button>
+            <a class="btn btn--ghost-w" href="contact.html">Contact</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="board visit">
+      <div class="visit-card rv">
+        <div>
+          <span class="eyebrow">Visit the showroom</span>
+          <h2 class="display">66 Grant Avenue.</h2>
+          <address>Corner Nellie Road, Norwood, Johannesburg 2192 · DM us for viewing times.</address>
+        </div>
+        <div class="ctas">
+          <a class="btn" data-maps>Get directions <span class="arr">↗</span></a>
+          <a class="btn btn--ghost" href="contact.html">Contact us</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="board ftr">
+      <div class="ftr-top">
+        <div class="ftr-brand">
+          <div class="ftr-word">RETROMOD.</div>
+          <p class="ftr-tag">Mid-Century Modern &amp; Beyond. Furniture • Art • Audio. Buyers and sellers — shipped
+            nationwide from Norwood, Johannesburg.</p>
+        </div>
+        <div>
+          <h4>Visit</h4>
+          <address>66 Grant Avenue<br>Corner Nellie Road<br>Norwood, Johannesburg 2192</address>
+          <ul style="margin-top:calc(12*var(--u))">
+            <li><a data-maps>Open in Maps ↗</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Shop</h4>
+          <ul>
+            <li><a href="shop.html">All stock</a></li>
+            <li><a href="shop.html?cat=audio">Audio</a></li>
+            <li><a href="shop.html?cat=lighting">Lighting</a></li>
+            <li><a href="shop.html?cat=cameras">Cameras</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Connect</h4>
+          <ul>
+            <li><a data-ig>Instagram @retromod.za</a></li>
+            <li><a data-dm>Send a DM</a></li>
+            <li><a data-wa>WhatsApp community</a></li>
+            <li><a href="about.html">About us</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="ftr-bot"><span>© <span data-year>2026</span> RETROMOD. All rights reserved.</span><span>Nationwide
+          shipping · Norwood, Johannesburg</span></div>
+    </div>
+  </footer>
+
+  <script src="assets/js/products.js"></script>
+  <script src="assets/js/site.js"></script>
+  <script src="assets/js/cart.js"></script>
+  <script>
+    (() => {
+      const D = window.RETROMOD, { $, ICONS, reveal, isSold, onCatalog } = window.RM;
+      const copy = {
+        furniture: 'Teak, rosewood, chrome — seating, storage and tables.',
+        art: 'Prints, paintings and objects with a point of view.',
+        lighting: 'Sculptural lamps from the icons of Italian design.',
+        audio: 'Vintage amplifiers, receivers, speakers and turntables.',
+        cameras: 'Collectible and modern-classic cameras.'
+      };
+      function renderDeals() {
+        const count = id => D.products.filter(p => p.category === id && !isSold(p)).length;
+        $('#dealGrid').innerHTML = D.categories.filter(c => c.id !== 'all').map((c, i) => `
+  <a class="deal-card rv" style="--d:${i * 60}ms" href="shop.html?cat=${c.id}"${count(c.id) ? '' : ` data-enquire="Hi RETROMOD., I'm looking for ${c.label.toLowerCase()} — do you have anything coming in?"`}>
+    ${ICONS[c.id]}
+    <div><h3>${c.label}</h3><p>${copy[c.id] || ''}</p>
+    <span class="go"><span>${count(c.id) ? count(c.id) + ' on the floor' : 'DM to source'}</span><span>↗</span></span></div>
+  </a>`).join('');
+        reveal($('#dealGrid'));
+      }
+      onCatalog(renderDeals);
+    })();
+  </script>
+</body>
+
+</html>
