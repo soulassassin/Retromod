@@ -22,6 +22,27 @@
     'cancelled'
   ];
 
+  // Human labels for stored enum values (never show raw keys to staff).
+  const LABELS = {
+    available: 'Available', reserved: 'Reserved', sold: 'Sold',
+    pending: 'Pending', pending_payment: 'Awaiting payment', confirmed: 'Confirmed', paid: 'Paid',
+    ready_for_collection: 'Ready for collection', dispatched: 'Dispatched', shipped: 'Shipped',
+    completed: 'Completed', cancelled: 'Cancelled',
+    collection: 'Collect in Norwood', delivery: 'Nationwide courier',
+    eft: 'EFT / bank transfer', pay_on_collection: 'Pay on collection', card_order_request: 'Card payment link'
+  };
+  // Badge tone per order status: waiting → amber, money in → green, on its way → ink, closed → muted/red.
+  const ORDER_TONE = {
+    pending: 'wait', pending_payment: 'wait', confirmed: 'ok', paid: 'ok',
+    ready_for_collection: 'go', dispatched: 'go', shipped: 'go', completed: 'done', cancelled: 'stop'
+  };
+  const label = v => LABELS[v] || String(v || '').replace(/_/g, ' ').replace(/^\w/, c => c.toUpperCase());
+  const fmtDate = iso => {
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return '';
+    return d.toLocaleString('en-ZA', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  };
+
   const state = {
     authenticated: false,
     activeTab: 'inventory',
@@ -87,7 +108,7 @@
   }
 
   function formatOrderStatusLabel(s) {
-    return String(s || 'pending').replace(/_/g, ' ');
+    return label(s || 'pending');
   }
 
   let toastTimer = null;
@@ -181,17 +202,21 @@
     }
   }
 
-  function switchTab(tabName) {
+  const TABS = ['inventory', 'import', 'orders'];
+  // Real tabs: exactly one panel visible. Switching is instant — it happens
+  // dozens of times a session, so it gets no animation.
+  function switchTab(tabName, { focus = false } = {}) {
+    if (!TABS.includes(tabName)) tabName = 'inventory';
     state.activeTab = tabName;
     $$('[role="tab"]').forEach(btn => {
       const active = btn.dataset.tab === tabName;
       btn.classList.toggle('on', active);
       btn.setAttribute('aria-selected', String(active));
+      btn.tabIndex = active ? 0 : -1;
+      if (active && focus) btn.focus();
     });
-    const targetPanel = $(`#panel-${tabName}`);
-    if (targetPanel && typeof targetPanel.scrollIntoView === 'function') {
-      targetPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    TABS.forEach(t => { const p = $(`#panel-${t}`); if (p) p.hidden = t !== tabName; });
+    if (location.hash.slice(1) !== tabName) history.replaceState(null, '', `#${tabName}`);
   }
 
   function renderStats() {
@@ -236,11 +261,11 @@
         `<option value="${esc(c.id)}"${p.category === c.id ? ' selected' : ''}>${esc(c.label)}</option>`
       ).join('');
       const statusOpts = PRODUCT_STATUSES.map(st =>
-        `<option value="${esc(st)}"${p.status === st ? ' selected' : ''}>${esc(st)}</option>`
+        `<option value="${esc(st)}"${p.status === st ? ' selected' : ''}>${esc(label(st))}</option>`
       ).join('');
 
       return `
-        <tr data-product-id="${esc(p.id)}" data-dirty="false">
+        <tr data-product-id="${esc(p.id)}" data-dirty="false" data-status="${esc(p.status)}">
           <td>
             <div class="adm-thumb">
               ${imgSrc ? `<img src="${esc(imgSrc)}" alt="${esc(p.title)}" onerror="this.hidden=true;this.nextElementSibling.hidden=false">` : ''}
@@ -270,7 +295,7 @@
             <select class="input" data-field="status" aria-label="Status (${esc(p.id)})">${statusOpts}</select>
           </td>
           <td>
-            <button type="button" class="btn" data-save-product="${esc(p.id)}">Save</button>
+            <button type="button" class="btn btn--ghost adm-save" data-save-product="${esc(p.id)}" disabled>Saved</button>
           </td>
         </tr>
       `;
@@ -303,13 +328,34 @@
     }
   }
 
+  function renderOrderFilterCounts() {
+    const sel = $('#ordersStatusFilter');
+    const counts = state.orders.reduce((m, o) => (m[o.status] = (m[o.status] || 0) + 1, m), {});
+    $$('option', sel).forEach(opt => {
+      const n = opt.value === 'all' ? state.orders.length : (counts[opt.value] || 0);
+      const base = opt.value === 'all' ? 'All orders' : label(opt.value);
+      opt.textContent = `${base} (${n})`;
+    });
+  }
+
   function renderOrders() {
     const container = $('#ordersBody');
     const filter = $('#ordersStatusFilter').value || 'all';
-    const list = state.orders.filter(o => filter === 'all' || o.status === filter);
+    const q = ($('#ordersSearch') ? $('#ordersSearch').value : '').trim().toLowerCase();
+    renderOrderFilterCounts();
+    const list = state.orders
+      .filter(o => filter === 'all' || o.status === filter)
+      .filter(o => {
+        if (!q) return true;
+        const c = o.customer || {};
+        return [o.orderRef, c.name, c.email, c.phone].join(' ').toLowerCase().includes(q);
+      })
+      .sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
 
     if (!list.length) {
-      container.innerHTML = '<div class="adm-empty-state">No orders found for the selected filter.</div>';
+      container.innerHTML = state.orders.length
+        ? '<div class="adm-empty-state">No orders match this search or filter.</div>'
+        : '<div class="adm-empty-state">No orders yet. New checkout orders will appear here.</div>';
       return;
     }
 
@@ -318,49 +364,56 @@
       const addr = o.shippingAddress;
       const items = Array.isArray(o.items) ? o.items : [];
       const statusOpts = ORDER_STATUSES.map(st =>
-        `<option value="${esc(st)}"${o.status === st ? ' selected' : ''}>${esc(formatOrderStatusLabel(st))}</option>`
+        `<option value="${esc(st)}"${o.status === st ? ' selected' : ''}>${esc(label(st))}</option>`
       ).join('');
       const isCancelled = o.status === 'cancelled';
+      const ship = o.shippingZar != null ? Number(o.shippingZar) : null;
+      const pieces = items.reduce((n, it) => n + (Number(it.quantity) || 0), 0);
 
       return `
-        <article class="adm-order-card" data-order-ref="${esc(o.orderRef)}">
-          <div class="adm-order-head">
-            <div>
-              <div class="adm-order-ref">${esc(o.orderRef)}</div>
+        <article class="adm-order-card" data-order-ref="${esc(o.orderRef)}" data-status="${esc(o.status)}">
+          <header class="adm-order-head">
+            <div class="adm-order-id">
+              <div class="adm-order-ref-row">
+                <span class="adm-order-ref">${esc(o.orderRef)}</span>
+                <span class="adm-status adm-status--${esc(ORDER_TONE[o.status] || 'wait')}"><i aria-hidden="true"></i>${esc(label(o.status))}</span>
+              </div>
               <div class="adm-meta-line">
-                <span>${esc((o.createdAt || '').slice(0, 19).replace('T', ' '))}</span>
-                <span>· Total: <strong>${esc(fmtZar(o.totalZar))}</strong></span>
+                <span>${esc(fmtDate(o.createdAt))}</span>
+                <span>· ${pieces} piece${pieces === 1 ? '' : 's'}</span>
                 ${o.stockRestoredAt ? '<span>· Stock restored</span>' : ''}
               </div>
             </div>
-            <div class="adm-order-controls">
-              <select class="input" data-order-status aria-label="Order status for ${esc(o.orderRef)}"${isCancelled ? ' disabled' : ''}>
-                ${statusOpts}
-              </select>
-              <button type="button" class="btn" data-save-order="${esc(o.orderRef)}"${isCancelled ? ' disabled' : ''}>Update</button>
-            </div>
-          </div>
+            <div class="adm-order-total"><span class="eyebrow">Total</span><b>${esc(fmtZar(o.totalZar))}</b></div>
+          </header>
           <div class="adm-order-grid">
             <div class="adm-order-col">
               <h4>Customer</h4>
-              <p>${esc(cust.name || '')}</p>
-              <p>${esc(cust.email || '')}</p>
-              <p>${esc(cust.phone || '')}</p>
+              <p class="strong">${esc(cust.name || '')}</p>
+              ${cust.email ? `<p><a href="mailto:${esc(cust.email)}">${esc(cust.email)}</a></p>` : ''}
+              ${cust.phone ? `<p><a href="tel:${esc(String(cust.phone).replace(/[^\d+]/g, ''))}">${esc(cust.phone)}</a></p>` : ''}
             </div>
             <div class="adm-order-col">
-              <h4>Fulfillment &amp; Payment</h4>
-              <p>Fulfillment: ${esc(o.fulfillment || '')}</p>
-              <p>Payment: ${esc(formatOrderStatusLabel(o.paymentMethod || ''))}</p>
+              <h4>Fulfilment &amp; payment</h4>
+              <p class="strong">${esc(label(o.fulfillment))}${ship ? ` · ${esc(fmtZar(ship))}` : ''}</p>
+              <p>${esc(label(o.paymentMethod))}</p>
               ${addr ? `<p>${esc([addr.street, addr.suburb, addr.city, addr.province, addr.postalCode].filter(Boolean).join(', '))}</p>` : ''}
-              ${o.notes ? `<p>Note: ${esc(o.notes)}</p>` : ''}
+              ${o.notes ? `<p class="adm-note">“${esc(o.notes)}”</p>` : ''}
             </div>
             <div class="adm-order-col">
-              <h4>Line Items</h4>
-              <ul>
-                ${items.map(it => `<li>${esc(it.quantity)} × ${esc(it.title || it.id)} (${esc(fmtZar(it.lineTotalZar != null ? it.lineTotalZar : (it.price || 0) * (it.quantity || 1)))})</li>`).join('')}
+              <h4>Pieces</h4>
+              <ul class="adm-lines">
+                ${items.map(it => `<li><span>${esc(it.quantity)} × ${esc(it.title || it.id)}</span><b>${esc(fmtZar(it.lineTotalZar != null ? it.lineTotalZar : (it.price || 0) * (it.quantity || 1)))}</b></li>`).join('')}
               </ul>
             </div>
           </div>
+          <footer class="adm-order-controls">
+            <label class="adm-ctl-label" for="st-${esc(o.orderRef)}">Status</label>
+            <select class="input" id="st-${esc(o.orderRef)}" data-order-status data-current="${esc(o.status)}" aria-label="Order status for ${esc(o.orderRef)}"${isCancelled ? ' disabled' : ''}>
+              ${statusOpts}
+            </select>
+            <button type="button" class="btn btn--ghost" data-save-order="${esc(o.orderRef)}" disabled>${isCancelled ? 'Cancelled' : 'Update status'}</button>
+          </footer>
         </article>
       `;
     }).join('');
@@ -547,20 +600,38 @@
   });
 
   $$('[role="tab"]').forEach(tabBtn => {
-    tabBtn.addEventListener('click', () => {
-      switchTab(tabBtn.dataset.tab);
+    tabBtn.addEventListener('click', () => switchTab(tabBtn.dataset.tab));
+    tabBtn.addEventListener('keydown', evt => {
+      const i = TABS.indexOf(state.activeTab);
+      if (evt.key === 'ArrowRight' || evt.key === 'ArrowLeft') {
+        evt.preventDefault();
+        switchTab(TABS[(i + (evt.key === 'ArrowRight' ? 1 : TABS.length - 1)) % TABS.length], { focus: true });
+      }
+      if (evt.key === 'Home') { evt.preventDefault(); switchTab(TABS[0], { focus: true }); }
+      if (evt.key === 'End') { evt.preventDefault(); switchTab(TABS[TABS.length - 1], { focus: true }); }
     });
   });
+  switchTab(location.hash.slice(1) || 'inventory');
+  addEventListener('hashchange', () => switchTab(location.hash.slice(1)));
 
   $('#invSearch').addEventListener('input', () => renderInventory());
   $('#invStatus').addEventListener('change', () => renderInventory());
   $('#invRefreshBtn').addEventListener('click', () => loadCatalog().then(() => showToast('Inventory refreshed')));
 
+  // A row's Save button stays quiet ("Saved", disabled) until something in the row changes.
+  function markDirty(row) {
+    if (!row || row.dataset.dirty === 'true') return;
+    row.dataset.dirty = 'true';
+    const btn = row.querySelector('[data-save-product]');
+    if (btn) { btn.disabled = false; btn.textContent = 'Save'; btn.classList.remove('btn--ghost'); }
+  }
+  $('#inventoryBody').addEventListener('input', evt => markDirty(evt.target.closest('tr[data-product-id]')));
+
   // Sync quantity <-> status in inventory table and handle Save
   $('#inventoryBody').addEventListener('change', evt => {
     const row = evt.target.closest('tr[data-product-id]');
     if (!row) return;
-    row.dataset.dirty = 'true';
+    markDirty(row);
     const qtyEl = row.querySelector('[data-field="quantity"]');
     const statusEl = row.querySelector('[data-field="status"]');
 
@@ -624,8 +695,7 @@
       showToast(`Saved ${updated.title}`);
     } catch (err) {
       setRegionMsg($('#invError'), err.message || 'Failed to save product');
-    } finally {
-      btn.disabled = false;
+      btn.disabled = false; // row re-renders on success; keep it actionable on failure
     }
   });
 
@@ -873,6 +943,19 @@
 
   // Orders events
   $('#ordersStatusFilter').addEventListener('change', () => renderOrders());
+  let ordersSearchT;
+  $('#ordersSearch').addEventListener('input', () => { clearTimeout(ordersSearchT); ordersSearchT = setTimeout(renderOrders, 120); });
+  // Update button only becomes primary once the status differs from what's saved.
+  $('#ordersBody').addEventListener('change', evt => {
+    const sel = evt.target.closest('[data-order-status]');
+    if (!sel) return;
+    const btn = sel.closest('[data-order-ref]').querySelector('[data-save-order]');
+    const changed = sel.value !== sel.dataset.current;
+    btn.disabled = !changed;
+    btn.classList.toggle('btn--ghost', !changed);
+    btn.classList.toggle('btn--danger', changed && sel.value === 'cancelled');
+    btn.textContent = changed ? (sel.value === 'cancelled' ? 'Cancel order' : `Mark ${label(sel.value).toLowerCase()}`) : 'Update status';
+  });
   $('#ordersRefreshBtn').addEventListener('click', () => loadOrders().then(() => showToast('Orders refreshed')));
 
   $('#ordersBody').addEventListener('click', async evt => {
@@ -882,6 +965,16 @@
     const card = btn.closest('[data-order-ref]');
     if (!card) return;
     const nextStatus = card.querySelector('[data-order-status]').value;
+
+    // Cancelling locks the order, so it takes a second, deliberate click.
+    if (nextStatus === 'cancelled' && btn.dataset.armed !== '1') {
+      btn.dataset.armed = '1';
+      btn.textContent = 'Click again to cancel';
+      clearTimeout(btn._disarm);
+      btn._disarm = setTimeout(() => { btn.dataset.armed = ''; btn.textContent = 'Cancel order'; }, 3500);
+      return;
+    }
+    clearTimeout(btn._disarm);
 
     setRegionMsg($('#ordersFeedback'), '');
     setRegionMsg($('#ordersError'), '');
@@ -900,8 +993,7 @@
       showToast(`Order ${orderRef} updated`);
     } catch (err) {
       setRegionMsg($('#ordersError'), err.message || 'Failed to update order');
-    } finally {
-      btn.disabled = false;
+      btn.disabled = false; // cards re-render on success; keep it actionable on failure
     }
   });
 

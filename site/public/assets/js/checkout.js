@@ -151,7 +151,7 @@ function renderSummary() {
 
   sumSubtotalEl.textContent = fmt(subtotal);
   sumShipLabelEl.textContent = ful === 'delivery' ? 'Nationwide SA courier' : 'Norwood collection';
-  sumShippingEl.textContent = shipping === 0 ? 'Free (R0)' : fmt(shipping);
+  sumShippingEl.textContent = shipping === 0 ? 'Free' : fmt(shipping);
   sumTotalEl.textContent = fmt(total);
 }
 
@@ -232,7 +232,7 @@ function buildOrderDmText(order) {
   const lines = [
     `Hi RETROMOD., I just placed order ${order.orderRef} (${fmt(order.totalZar)}).`,
     ...order.items.map(it => `• ${it.quantity}× ${it.title} — ${fmt(it.lineTotalZar)}`),
-    `Fulfillment: ${order.fulfillment === 'delivery' ? 'Nationwide Courier' : 'Norwood Collection'}`,
+    `Collection or delivery: ${order.fulfillment === 'delivery' ? 'Nationwide Courier' : 'Norwood Collection'}`,
     `Payment: ${paymentLabel(order.paymentMethod)}`,
     `Name: ${order.customer.name} (${order.customer.phone})`
   ];
@@ -264,7 +264,7 @@ function renderReceipt(order) {
         <p>${esc(order.customer.name)}<br>${esc(order.customer.email)}<br>${esc(order.customer.phone)}</p>
       </div>
       <div class="rc-block">
-        <h3>Fulfillment</h3>
+        <h3>Collection or delivery</h3>
         <p>${fulDetails}</p>
       </div>
       <div class="rc-block">
@@ -289,7 +289,7 @@ function renderReceipt(order) {
     </ul>
     <div class="co-totals">
       <div class="co-tot-row"><span>Subtotal</span><b>${fmt(order.subtotalZar)}</b></div>
-      <div class="co-tot-row"><span>Shipping</span><b>${order.shippingZar === 0 ? 'Free (R0)' : fmt(order.shippingZar)}</b></div>
+      <div class="co-tot-row"><span>Shipping</span><b>${order.shippingZar === 0 ? 'Free' : fmt(order.shippingZar)}</b></div>
     </div>
     <div class="co-tot-grand">
       <span>Total (ZAR)</span>

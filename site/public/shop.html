@@ -16,9 +16,6 @@
     rel="stylesheet">
   <link rel="stylesheet" href="assets/css/site.css">
   <style>
-    .page-hero-row {
-      margin-top: calc(28*var(--u))
-    }
 
     .hero-stats {
       display: flex;
@@ -188,9 +185,6 @@
     }
 
     @media (max-width:760px) {
-      .page-hero-row {
-        margin-top: 18px
-      }
 
       .hero-stats {
         gap: 20px 28px
@@ -506,7 +500,12 @@
         if (instant) requestAnimationFrame(() => ind.style.transition = '');
       }
 
-      function render() {
+      // How results appear depends on how often the user triggers it:
+      //  'initial' → editorial scroll-reveal (seen once per visit)
+      //  'filter'  → 150ms opacity settle (chips/sort: tens of times per visit)
+      //  'type'    → instant (keyboard-driven search never animates)
+      let rendered = false;
+      function render(mode = rendered ? 'filter' : 'initial') {
         const q = state.q.trim();
         let list = D.products.filter(p =>
           (state.cat === 'all' || p.category === state.cat) &&
@@ -516,11 +515,33 @@
           state.sort === 'low' ? a.price - b.price :
             state.sort === 'high' ? b.price - a.price :
               String(b.added).localeCompare(String(a.added))));
-        grid.innerHTML = list.map(card).join('');
+        // Fill the leftover columns of the last row (4-up desktop) with the Instagram tile
+        // rather than leaving a lone card stranded.
+        const spanD = list.length % 4 ? 4 - (list.length % 4) : 0;
+        const L = D.links || {};
+        const tile = spanD && list.length ? `
+          <aside class="more-tile" style="--sd:${spanD}">
+            <span class="eyebrow">Instagram first</span>
+            <h3>New pieces drop every week.</h3>
+            <p>Follow @retromod.za or join the WhatsApp community to see stock before it sells.</p>
+            <div class="more-ctas">
+              ${L.instagram ? `<a class="btn btn--white" href="${L.instagram}" target="_blank" rel="noopener">Follow <span class="arr">↗</span></a>` : ''}
+              ${L.whatsapp ? `<a class="btn btn--ghost-w" href="${L.whatsapp}" target="_blank" rel="noopener">WhatsApp community</a>` : ''}
+            </div>
+          </aside>` : '';
+        grid.innerHTML = list.map(card).join('') + tile;
         $('#count').textContent = list.length;
         $('#countLbl').textContent = list.length === 1 ? 'piece' : 'pieces';
         $('#empty').classList.toggle('show', !list.length);
-        reveal(grid);
+        if (mode === 'initial') {
+          reveal(grid);
+        } else {
+          $$('.rv', grid).forEach(el => el.classList.add('in', 'rv-done'));
+          if (mode === 'filter' && grid.animate && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            grid.animate([{ opacity: 0.35 }, { opacity: 1 }], { duration: 150, easing: 'ease' });
+          }
+        }
+        rendered = true;
         const u = new URLSearchParams();
         if (state.cat !== 'all') u.set('cat', state.cat);
         if (state.q) u.set('q', state.q);
@@ -529,14 +550,14 @@
       }
 
       let t;
-      qEl.addEventListener('input', () => { clearTimeout(t); t = setTimeout(() => { state.q = qEl.value; render(); }, 80); });
+      qEl.addEventListener('input', () => { clearTimeout(t); t = setTimeout(() => { state.q = qEl.value; render('type'); }, 80); });
       sortEl.addEventListener('change', () => { state.sort = sortEl.value; render(); });
       $('#reset').addEventListener('click', () => { state.cat = 'all'; state.q = ''; qEl.value = ''; placeInd(); render(); qEl.focus(); });
       addEventListener('resize', () => placeInd(true));
       document.fonts && document.fonts.ready.then(() => placeInd(true));
       onCatalog(() => {
         rebuildChips();
-        render();
+        render(rendered ? 'type' : 'initial'); // a background catalog refresh should never re-animate the grid
       });
     })();
   </script>

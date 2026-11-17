@@ -42,6 +42,8 @@
 - [x] `product.html?id=` — Product detail rendered from products.js
 - [x] `about.html` — Story, what we deal in, buying & selling, process
 - [x] `contact.html` — Visit, DM, WhatsApp, map, enquiry composer
+- [x] `checkout.html` — Bag checkout: details, collection/courier, payment, auto-numbered sections, receipt view (consistency pass 2026-11-17)
+- [x] `admin.html` — Studio admin: real tabs (#inventory / #import / #orders), quiet-until-edited Save, order cards with status badges, search + status counts (consistency pass 2026-11-17)
 
 ## 6. Roadmap (Backlog)
 

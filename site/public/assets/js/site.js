@@ -152,11 +152,18 @@ async function enquire(message) {
 }
 
 let revealIO;
+// Scroll reveal. After the reveal finishes the element gets .rv-done, which drops the
+// slow reveal transition so its own hover/press transitions apply again.
+function revealed(el) {
+  el.classList.add('in');
+  const delay = parseFloat(getComputedStyle(el).getPropertyValue('--d')) || 0;
+  setTimeout(() => el.classList.add('rv-done'), 950 + delay);
+}
 function reveal(root = document) {
   const els = $$('.rv:not(.in)', root);
-  if (REDUCE || !('IntersectionObserver' in window)) { els.forEach(e => e.classList.add('in')); return; }
+  if (REDUCE || !('IntersectionObserver' in window)) { els.forEach(e => e.classList.add('in', 'rv-done')); return; }
   revealIO = revealIO || new IntersectionObserver(ents => ents.forEach(en => {
-    if (en.isIntersecting) { en.target.classList.add('in'); revealIO.unobserve(en.target); }
+    if (en.isIntersecting) { revealed(en.target); revealIO.unobserve(en.target); }
   }), { rootMargin: '0px 0px -8% 0px', threshold: .08 });
   els.forEach(e => revealIO.observe(e));
 }

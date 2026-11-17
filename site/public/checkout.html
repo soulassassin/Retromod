@@ -19,7 +19,15 @@
 .co-sec{border:0;margin:0;padding:0;min-width:0}
 .co-sec + .co-sec{margin-top:calc(28*var(--u));padding-top:calc(28*var(--u));border-top:1px solid var(--line)}
 .co-sec[hidden]{display:none}
-.co-sec legend{font-family:var(--display);font-stretch:104%;font-weight:640;font-size:calc(26*var(--u));line-height:1.05;letter-spacing:-.04em;margin-bottom:calc(16*var(--u));display:block;width:100%}
+/* Floating the legend keeps it inside the box, so the hairline divider between sections stays visible. */
+.co-sec legend{float:left;width:100%;padding:0;font-family:var(--display);font-stretch:104%;font-weight:640;font-size:calc(26*var(--u));line-height:1.05;letter-spacing:-.04em;margin-bottom:calc(18*var(--u))}
+.co-sec legend+*{clear:both}
+/* Sections number themselves, so hiding "Delivery address" never leaves a gap in the sequence. */
+#checkoutForm{counter-reset:co}
+.co-sec:not([hidden]) legend{counter-increment:co}
+.co-sec legend::before{content:counter(co,decimal-leading-zero) " · ";color:var(--muted)}
+/* Empty error slots take no space; they appear only when there's something to say. */
+.co-sec .err:empty{display:none}
 .co-fields{display:grid;grid-template-columns:1fr 1fr;gap:calc(16*var(--u))}
 .co-fields .full{grid-column:1/-1}
 .co-summary{position:sticky;top:calc(var(--hdr) + 20*var(--u));background:#fff;border:1px solid var(--line);border-radius:calc(14*var(--u));padding:calc(28*var(--u));min-width:0}
@@ -61,7 +69,8 @@
 
 @media (max-width:1024px){
   .co-grid{grid-template-columns:1fr;gap:24px}
-  .co-summary{position:static}
+  /* On narrow screens show what you're paying for before the form, not after it. */
+  .co-summary{position:static;order:-1}
 }
 @media (max-width:760px){
   .co-wrap{padding:24px 16px 64px}
@@ -139,7 +148,7 @@
     <div id="checkoutView" class="co-grid" hidden>
       <form id="checkoutForm" class="co-card" novalidate>
         <fieldset class="co-sec">
-          <legend>01 · Your details</legend>
+          <legend>Your details</legend>
           <div class="co-fields">
             <div class="field full">
               <label for="coName">Full name</label>
@@ -160,7 +169,7 @@
         </fieldset>
 
         <fieldset class="co-sec">
-          <legend>02 · Fulfillment</legend>
+          <legend>Collection or delivery</legend>
           <div class="choice-grid">
             <label class="choice on" for="fulCollection">
               <input type="radio" id="fulCollection" name="fulfillment" value="collection" aria-label="Collect in Norwood (Free)" checked>
@@ -181,7 +190,7 @@
         </fieldset>
 
         <fieldset class="co-sec" id="shippingFields" hidden>
-          <legend>03 · Delivery address</legend>
+          <legend>Delivery address</legend>
           <div class="co-fields">
             <div class="field full">
               <label for="coStreet">Street address</label>
@@ -223,7 +232,7 @@
         </fieldset>
 
         <fieldset class="co-sec">
-          <legend>Payment method</legend>
+          <legend>Payment</legend>
           <div class="choice-grid">
             <label class="choice on" for="payEft">
               <input type="radio" id="payEft" name="paymentMethod" value="eft" aria-label="EFT / Bank Transfer" checked>
@@ -259,7 +268,7 @@
         </fieldset>
 
         <div class="co-submit-row">
-          <span class="co-submit-note">Placing an order atomically reserves your piece on the Norwood floor.</span>
+          <span class="co-submit-note">Placing your order reserves these pieces for you straight away.</span>
           <button type="submit" class="btn" id="placeOrderBtn">Place order <span class="arr">↗</span></button>
         </div>
       </form>

@@ -392,96 +392,10 @@
       gap: calc(18*var(--u))
     }
 
-    .more-tile {
-      grid-column: span var(--sd);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      gap: calc(14*var(--u));
-      padding: calc(36*var(--u));
-      background: var(--ink);
-      color: #fff;
-      border-radius: calc(12*var(--u));
-      min-height: calc(300*var(--u))
-    }
-
-    .more-tile .eyebrow {
-      color: rgba(255, 255, 255, .55)
-    }
-
-    .more-tile h3 {
-      font-family: var(--display);
-      font-stretch: 104%;
-      font-weight: 640;
-      font-size: calc(48*var(--u));
-      line-height: .92;
-      letter-spacing: -.05em;
-      max-width: calc(520*var(--u))
-    }
-
-    .more-tile p {
-      max-width: calc(440*var(--u));
-      font: 500 calc(14.5*var(--u))/1.5 var(--ui);
-      color: rgba(255, 255, 255, .7)
-    }
-
-    .more-ctas {
-      display: flex;
-      gap: calc(10*var(--u));
-      margin-top: calc(8*var(--u));
-      flex-wrap: wrap
-    }
-
-    @media (max-width:1024px) {
-      .more-tile {
-        grid-column: 1/-1;
-        padding: 28px;
-        min-height: 0
-      }
-
-      .more-tile h3 {
-        font-size: 34px;
-        max-width: none
-      }
-
-      .more-tile p {
-        font-size: 14px;
-        max-width: none
-      }
-    }
-
     @media (max-width:760px) {
       .sec-head-r {
         gap: 14px;
         width: 100%
-      }
-
-      .more-tile {
-        grid-column: 1/-1;
-        padding: 24px 20px;
-        min-height: 0;
-        justify-content: flex-start;
-        gap: 10px
-      }
-
-      .more-tile h3 {
-        font-size: clamp(26px, 7.5vw, 32px)
-      }
-
-      .more-tile p {
-        font-size: 14px
-      }
-
-      .more-ctas {
-        width: 100%;
-        margin-top: 6px
-      }
-
-      .more-ctas .btn {
-        flex: 1 1 auto;
-        height: 44px;
-        padding: 0 16px;
-        font-size: 13.5px
       }
     }
 
