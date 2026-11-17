@@ -243,15 +243,31 @@ ol {
   position: sticky;
   top: 0;
   z-index: 50;
+  border-bottom: 1px solid transparent;
+  transition: border-color 250ms ease
+}
+
+/* The frosted glass lives on a pseudo-element, NOT on .site-header itself:
+   backdrop-filter makes an element the containing block for its position:fixed
+   children, which would trap the full-screen mobile menu (.mnav) inside the
+   64px header. */
+.site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
   background: rgba(250, 250, 250, .86);
   -webkit-backdrop-filter: blur(16px) saturate(1.2);
   backdrop-filter: blur(16px) saturate(1.2);
-  border-bottom: 1px solid transparent;
-  transition: border-color 250ms ease, background-color 250ms ease
+  transition: background-color 250ms ease;
+  pointer-events: none
 }
 
 .site-header.scrolled {
-  border-bottom-color: var(--line);
+  border-bottom-color: var(--line)
+}
+
+.site-header.scrolled::before {
   background: rgba(255, 255, 255, .88)
 }
 
@@ -389,6 +405,10 @@ ol {
   padding-top: calc(24*var(--u));
   font: 500 calc(12*var(--u))/1.4 var(--ui);
   color: var(--muted)
+}
+
+.ftr-credit {
+  letter-spacing: .02em
 }
 
 /* ---------- product cards ---------- */
