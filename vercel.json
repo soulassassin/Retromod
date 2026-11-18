@@ -3,6 +3,16 @@
   "framework": null,
   "outputDirectory": "site/public",
   "cleanUrls": true,
+  "functions": {
+    "api/index.js": {
+      "maxDuration": 30,
+      "includeFiles": "data/seed-catalog.json"
+    }
+  },
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "/api/index" },
+    { "source": "/media/:file", "destination": "https://vkjzhnhfdlwdeaiopomc.supabase.co/storage/v1/object/public/media/:file" }
+  ],
   "headers": [
     {
       "source": "/(.*)",

@@ -8,6 +8,8 @@ const { SECURITY_HEADERS, HttpError, sendError } = require('./lib/http');
 const { createPublicRouter } = require('./lib/routes/public');
 const { createOrdersRouter } = require('./lib/routes/orders');
 const { createAdminRouter } = require('./lib/routes/admin');
+const { createSupabaseStore, getSupabaseConfig } = require('./lib/supabase-store');
+const { createPasswordAuthProvider, createSupabaseAuthProvider } = require('./lib/auth-providers');
 
 const DEFAULT_ROOT = path.join(__dirname, 'site', 'public');
 
@@ -78,17 +80,47 @@ function isSafeRelative(baseDir, targetPath) {
 
 function createApp(options = {}) {
   const rootDir = path.resolve(options.rootDir || DEFAULT_ROOT);
-  const store = options.store || createStore({
-    dataDir: options.dataDir,
-    seedPath: options.seedPath
-  });
+  const supabaseConfig = options.store ? null : (options.supabaseConfig || getSupabaseConfig());
+  const store = options.store || (supabaseConfig
+    ? createSupabaseStore({ config: supabaseConfig, seedPath: options.seedPath })
+    : createStore({ dataDir: options.dataDir, seedPath: options.seedPath }));
   store.ensureStoreSync();
+
+  const authProvider = options.authProvider || (store.kind === 'supabase'
+    ? createSupabaseAuthProvider({ config: store.config })
+    : createPasswordAuthProvider());
 
   const routers = [
     createPublicRouter({ store }),
     createOrdersRouter({ store }),
-    createAdminRouter({ store })
+    createAdminRouter({ store, authProvider })
   ];
+
+  async function sendCatalogScript(req, res) {
+    const data = await store.getCatalog();
+    const payload = {
+      links: data.links,
+      address: data.address,
+      followers: data.followers,
+      posts: data.posts,
+      categories: data.categories,
+      stats: data.stats,
+      products: data.products
+    };
+    const serialized = JSON.stringify(payload).replace(/</g, '\\u003c');
+    const body = `window.RETROMOD = ${serialized};\n`;
+    res.writeHead(200, {
+      ...SECURITY_HEADERS,
+      'Content-Type': 'text/javascript; charset=utf-8',
+      'Cache-Control': 'no-store',
+      'Content-Length': Buffer.byteLength(body, 'utf8')
+    });
+    if (req.method === 'HEAD') {
+      res.end();
+      return;
+    }
+    res.end(body);
+  }
 
   return async function app(req, res) {
     let url;
@@ -109,6 +141,14 @@ function createApp(options = {}) {
     // 1. API routes
     if (pathname === '/api' || pathname.startsWith('/api/')) {
       try {
+        if (pathname === '/api/catalog-script' || pathname === '/api/catalog.js') {
+          if (req.method !== 'GET' && req.method !== 'HEAD') {
+            sendError(res, 405, 'Method not allowed', {}, { Allow: 'GET, HEAD' });
+            return;
+          }
+          await sendCatalogScript(req, res);
+          return;
+        }
         for (const router of routers) {
           const handled = await router.handle(req, res, url);
           if (handled) return;
@@ -149,6 +189,15 @@ function createApp(options = {}) {
         sendText(res, 404, 'Not found');
         return;
       }
+      if (typeof store.getMediaPublicUrl === 'function') {
+        if (rel.includes('/')) {
+          sendText(res, 404, 'Not found');
+          return;
+        }
+        res.writeHead(302, { ...SECURITY_HEADERS, Location: store.getMediaPublicUrl(rel), 'Cache-Control': 'no-cache' });
+        res.end();
+        return;
+      }
       const mediaDir = path.resolve(store.getMediaDir());
       const target = path.resolve(mediaDir, rel);
       if (!isSafeRelative(mediaDir, target)) {
@@ -165,32 +214,10 @@ function createApp(options = {}) {
       return;
     }
 
-    // 3. Dynamic /assets/js/products.js synced with persisted catalog.json
+    // 3. Dynamic /assets/js/products.js (legacy path) synced with the live store
     if (pathname === '/assets/js/products.js') {
       try {
-        const data = store.getCatalog();
-        const payload = {
-          links: data.links,
-          address: data.address,
-          followers: data.followers,
-          posts: data.posts,
-          categories: data.categories,
-          stats: data.stats,
-          products: data.products
-        };
-        const serialized = JSON.stringify(payload).replace(/</g, '\\u003c');
-        const body = `window.RETROMOD = ${serialized};\n`;
-        res.writeHead(200, {
-          ...SECURITY_HEADERS,
-          'Content-Type': 'text/javascript; charset=utf-8',
-          'Cache-Control': 'no-store',
-          'Content-Length': Buffer.byteLength(body, 'utf8')
-        });
-        if (req.method === 'HEAD') {
-          res.end();
-          return;
-        }
-        res.end(body);
+        await sendCatalogScript(req, res);
         return;
       } catch (err) {
         console.error('Error rendering dynamic products.js:', err);
@@ -309,6 +336,7 @@ if (require.main === module) {
 
 module.exports = {
   createApp,
+  loadLocalEnvFiles,
   startServer,
   TYPES
 };

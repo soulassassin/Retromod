@@ -1,0 +1,9 @@
+.env*
+!.env.example
+data/catalog.json
+data/orders.json
+data/import-logs.json
+data/media
+tests
+.design
+node_modules

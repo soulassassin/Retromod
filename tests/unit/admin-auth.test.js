@@ -164,12 +164,13 @@ describe('Admin API auth, catalog, orders & console integration', () => {
     // Unauthenticated session check
     const s0 = await fetch(`${base}/api/admin/session`);
     assert.equal(s0.status, 200);
-    assert.deepEqual(await s0.json(), { authenticated: false });
+    assert.deepEqual(await s0.json(), { authenticated: false, mode: 'password', email: '' });
 
     // Protected routes gate at 401 when unauthenticated or with forged cookie
     const protectedProbes = [
       ['GET', '/api/admin/catalog'],
       ['PATCH', '/api/admin/products/marantz-twenty-nine'],
+      ['DELETE', '/api/admin/products/marantz-twenty-nine'],
       ['GET', '/api/admin/orders'],
       ['PATCH', '/api/admin/orders/RM-123'],
       ['POST', '/api/admin/import/preview'],
@@ -206,14 +207,14 @@ describe('Admin API auth, catalog, orders & console integration', () => {
       body: JSON.stringify({ password: 'studio-secret-password' })
     });
     assert.equal(okLogin.status, 200);
-    assert.deepEqual(await okLogin.json(), { authenticated: true });
+    assert.deepEqual(await okLogin.json(), { authenticated: true, mode: 'password', email: '' });
     const cookie = extractCookiePair(okLogin);
     assert.ok(cookie.startsWith('retromod_admin='));
 
     // Authenticated session check
     const s1 = await fetch(`${base}/api/admin/session`, { headers: { Cookie: cookie } });
     assert.equal(s1.status, 200);
-    assert.deepEqual(await s1.json(), { authenticated: true });
+    assert.deepEqual(await s1.json(), { authenticated: true, mode: 'password', email: '' });
 
     // Wrong method on authenticated catalog -> 405
     const postCatalog = await fetch(`${base}/api/admin/catalog`, {
@@ -392,5 +393,46 @@ describe('Admin API auth, catalog, orders & console integration', () => {
       body: JSON.stringify({ status: 'confirmed' })
     });
     assert.equal(reopenRes.status, 409);
+  });
+
+  it('deletes products (and their orphaned /media photo) behind auth', async (t) => {
+    const tmpDir = makeTempDir();
+    const prevPw = process.env.RETROMOD_ADMIN_PASSWORD;
+    process.env.RETROMOD_ADMIN_PASSWORD = 'delete-test-password';
+    const store = storeModule.createStore({ dataDir: tmpDir });
+    store.ensureStoreSync();
+    const mediaFile = path.join(store.getMediaDir(), 'nad-3020i.jpg');
+    fs.writeFileSync(mediaFile, fs.readFileSync(path.join(__dirname, '..', '..', 'site', 'public', 'assets', 'stock', 'nad-3020i.jpg')));
+    await store.patchProduct('nad-3020i', { image: '/media/nad-3020i.jpg' });
+
+    const server = await startServer({ port: 0, store });
+    t.after(() => {
+      server.close();
+      if (prevPw === undefined) delete process.env.RETROMOD_ADMIN_PASSWORD;
+      else process.env.RETROMOD_ADMIN_PASSWORD = prevPw;
+      fs.rmSync(tmpDir, { recursive: true, force: true });
+    });
+    const base = `http://127.0.0.1:${server.address().port}`;
+    const loginRes = await fetch(`${base}/api/admin/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: 'delete-test-password' })
+    });
+    const cookie = extractCookiePair(loginRes);
+
+    const del = await fetch(`${base}/api/admin/products/nad-3020i`, { method: 'DELETE', headers: { Cookie: cookie } });
+    assert.equal(del.status, 200);
+    const delBody = await del.json();
+    assert.equal(delBody.deleted, true);
+    assert.equal(delBody.product.id, 'nad-3020i');
+    assert.equal(store.getProductById('nad-3020i'), null);
+    assert.equal(store.getCatalog().products.length, 4);
+    assert.equal(fs.existsSync(mediaFile), false, 'orphaned media photo should be removed');
+
+    const pub = await fetch(`${base}/api/products/nad-3020i`);
+    assert.equal(pub.status, 404);
+
+    const again = await fetch(`${base}/api/admin/products/nad-3020i`, { method: 'DELETE', headers: { Cookie: cookie } });
+    assert.equal(again.status, 404);
   });
 });

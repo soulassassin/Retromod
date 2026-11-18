@@ -32,7 +32,10 @@ PORT=4101 npm start
 |---|---|---|
 | `PORT` | `3000` | HTTP port bound by `server.js` |
 | `RETROMOD_DATA_DIR` | `./data` | Directory for `catalog.json`, `orders.json`, `import-logs.json`, and `media/` |
-| `RETROMOD_ADMIN_PASSWORD` | — | Admin password for `/admin` authentication |
+| `SUPABASE_URL` | — | Supabase project URL. With the service key set, it switches to live Supabase mode |
+| `SUPABASE_SERVICE_ROLE_KEY` | — | **Secret** server-side key for the database and Storage |
+| `SUPABASE_ANON_KEY` | — | Publishable key used for staff sign-in |
+| `RETROMOD_ADMIN_PASSWORD` | — | Local-mode shared admin password for `/admin` |
 | `RETROMOD_SESSION_SECRET` | — | Optional HMAC signing secret for `retromod_admin` cookies |
 
 ## Scripts
@@ -48,8 +51,36 @@ PORT=4101 npm start
 - `GET|HEAD /api/products` — Catalog metadata, category/stock stats, and product list (supports `?category=`, `?q=`, `?status=`)
 - `GET|HEAD /api/products/:id` — Single product record (`404` if missing)
 - `/api/orders/*` — Order capture & receipt endpoints (stubbed `501` in M1; implemented in M2)
-- `/api/admin/*` — Admin inventory & Instagram import endpoints (stubbed `501` in M1; implemented in M3)
+- `/api/admin/*` — Staff login/session, inventory (`PATCH`/`DELETE /api/admin/products/:id`), orders, and Instagram import preview/commit
+- `GET /api/catalog-script` — Live catalogue as `window.RETROMOD` for storefront pages
 
-## Deployment Notes
+## Stock Management (Instagram → Shop)
 
-`vercel.json` configures static preview hosting for `site/public/` (`cleanUrls: true` + security headers), which does **not** run `server.js` or persist writes to `RETROMOD_DATA_DIR`. Full live e-commerce orders, `/api/*` routes, and Instagram stock imports require running `node server.js` (`npm start`) on a persistent Node.js host with persistent disk storage for `RETROMOD_DATA_DIR`.
+Sign in at **`/admin`** with your staff email and password.
+
+- **Import tab**: paste one or more `instagram.com/p/…` or `/reel/…` links (one per line) and click **Preview**. The photo, title, ZAR price, maker, era and category are read from the post caption into editable drafts. Fix anything Instagram didn't give us, then **Publish**. The piece appears on the shop immediately and its photo is stored in Supabase Storage (`/media/*`).
+- **Stock tab**: edit title, category, price and quantity. Set the status to **Available**, **Reserved** or **Sold**; sold pieces stay on the site with a SOLD tag. **Delete** removes the piece and its imported photo from the site. Click it twice to confirm.
+- **Orders tab**: checkout orders, with status updates. Cancelling an order restores its stock.
+
+### Staff logins
+
+Staff accounts use Supabase Auth, and only emails on the `staff` allowlist can open the console. There is no public sign-up.
+
+```bash
+npm run staff:add -- name@example.com     # prompts for a password (min 10 chars)
+npm run staff:list
+npm run staff:remove -- name@example.com
+```
+
+## Data & Deployment
+
+| Mode | When | Storage | Admin login |
+|---|---|---|---|
+| **Live (Supabase)** | `SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY` set | Supabase Postgres (`products`, `orders`, `import_logs`, `staff`) + Storage bucket `media` | Staff email + password |
+| **Local** | Supabase vars blank | JSON files in `RETROMOD_DATA_DIR` | `RETROMOD_ADMIN_PASSWORD` |
+
+**Vercel**: `api/index.js` runs the same app as `npm start` for every `/api/*` request, and `/media/*` is rewritten to the public Storage bucket. Storefront pages load the live catalogue from `/api/catalog-script`, with `assets/js/products.js` as a static fallback, so imports, edits and deletes show up without a redeploy. Set `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` and `SUPABASE_ANON_KEY` in the Vercel project's environment variables.
+
+Every write goes through the `public.apply_changes(jsonb)` Postgres function in a single transaction, with a per-row `rev` optimistic lock. Two simultaneous checkouts can't sell the same one-off piece twice; the loser retries against fresh stock. All tables have RLS enabled with no browser policies, so only the server (service-role key) can read or write.
+
+One-off migration of existing local data (`data/catalog.json`, `orders.json`, `data/media/`): `npm run db:migrate`. It is safe to re-run, because rows already in Supabase are skipped.

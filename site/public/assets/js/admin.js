@@ -187,6 +187,12 @@
     const logoutBtn = $('#logoutBtn');
     const sessionBadge = $('#sessionBadge');
 
+    const usesEmail = state.authMode === 'supabase';
+    $('#emailField').hidden = !usesEmail;
+    $('#adminPasswordLabel').textContent = usesEmail ? 'Password' : 'Admin password';
+    $('#adminPassword').setAttribute('aria-label', usesEmail ? 'Password' : 'Admin password');
+    $('#sessionLabel').textContent = state.userEmail ? state.userEmail : 'Signed in';
+
     if (state.authenticated) {
       loginView.hidden = true;
       workspaceView.hidden = false;
@@ -197,8 +203,8 @@
       loginView.hidden = false;
       logoutBtn.hidden = true;
       sessionBadge.hidden = true;
-      const pwInput = $('#adminPassword');
-      if (pwInput) pwInput.focus();
+      const firstInput = usesEmail && !$('#adminEmail').value ? $('#adminEmail') : $('#adminPassword');
+      if (firstInput) firstInput.focus();
     }
   }
 
@@ -295,7 +301,10 @@
             <select class="input" data-field="status" aria-label="Status (${esc(p.id)})">${statusOpts}</select>
           </td>
           <td>
-            <button type="button" class="btn btn--ghost adm-save" data-save-product="${esc(p.id)}" disabled>Saved</button>
+            <div class="adm-row-actions">
+              <button type="button" class="btn btn--ghost adm-save" data-save-product="${esc(p.id)}" disabled>Saved</button>
+              <button type="button" class="btn btn--ghost adm-delete" data-delete-product="${esc(p.id)}" aria-label="Delete ${esc(p.title)} from the shop">Delete</button>
+            </div>
           </td>
         </tr>
       `;
@@ -556,21 +565,29 @@
     evt.preventDefault();
     setRegionMsg($('#loginError'), '');
     const pwEl = $('#adminPassword');
+    const emailEl = $('#adminEmail');
     const password = pwEl.value;
+    const email = emailEl.value.trim();
+    if (state.authMode === 'supabase' && !email) {
+      setRegionMsg($('#loginError'), 'Please enter your email.');
+      emailEl.focus();
+      return;
+    }
     if (!password) {
-      setRegionMsg($('#loginError'), 'Please enter the admin password.');
+      setRegionMsg($('#loginError'), state.authMode === 'supabase' ? 'Please enter your password.' : 'Please enter the admin password.');
       pwEl.focus();
       return;
     }
     const btn = $('#loginBtn');
     btn.disabled = true;
     try {
-      await api('/api/admin/login', {
+      const login = await api('/api/admin/login', {
         method: 'POST',
-        body: { password },
+        body: state.authMode === 'supabase' ? { email, password } : { password },
         allow401: true
       });
       pwEl.value = '';
+      state.userEmail = (login && login.email) || '';
       state.authenticated = true;
       renderAuthState();
       await loadWorkspaceData();
@@ -590,6 +607,7 @@
       // ignore
     }
     state.authenticated = false;
+    state.userEmail = '';
     state.catalog = [];
     state.orders = [];
     state.importItems = [];
@@ -652,7 +670,59 @@
     }
   });
 
+  // Delete: first click arms the button ("Confirm delete"), a second click within 4s deletes.
+  // Kept in-page on purpose: no browser confirm() dialog.
+  let armedDelete = null;
+  function disarmDelete() {
+    if (!armedDelete) return;
+    clearTimeout(armedDelete.timer);
+    const b = armedDelete.btn;
+    if (b.isConnected) {
+      b.textContent = 'Delete';
+      b.classList.remove('btn--danger');
+      b.classList.add('btn--ghost');
+    }
+    armedDelete = null;
+  }
+
   $('#inventoryBody').addEventListener('click', async evt => {
+    const delBtn = evt.target.closest('[data-delete-product]');
+    if (delBtn) {
+      const id = delBtn.dataset.deleteProduct;
+      const row = delBtn.closest('tr[data-product-id]');
+      if (!armedDelete || armedDelete.btn !== delBtn) {
+        disarmDelete();
+        delBtn.textContent = 'Confirm delete';
+        delBtn.classList.remove('btn--ghost');
+        delBtn.classList.add('btn--danger');
+        armedDelete = { btn: delBtn, timer: setTimeout(disarmDelete, 4000) };
+        return;
+      }
+      clearTimeout(armedDelete.timer);
+      armedDelete = null;
+      setRegionMsg($('#invFeedback'), '');
+      setRegionMsg($('#invError'), '');
+      delBtn.disabled = true;
+      delBtn.textContent = 'Deleting…';
+      if (row) row.classList.add('is-removing');
+      try {
+        const res = await api(`/api/admin/products/${encodeURIComponent(id)}`, { method: 'DELETE' });
+        const title = (res.product && res.product.title) || id;
+        state.catalog = state.catalog.filter(p => p.id !== id);
+        await loadCatalog();
+        setRegionMsg($('#invFeedback'), `Deleted "${title}" from the shop`);
+        showToast(`Deleted ${title}`);
+      } catch (err) {
+        if (row) row.classList.remove('is-removing');
+        delBtn.disabled = false;
+        delBtn.textContent = 'Delete';
+        delBtn.classList.remove('btn--danger');
+        delBtn.classList.add('btn--ghost');
+        setRegionMsg($('#invError'), err.message || 'Failed to delete product');
+      }
+      return;
+    }
+
     const btn = evt.target.closest('[data-save-product]');
     if (!btn) return;
     const id = btn.dataset.saveProduct;
@@ -1001,6 +1071,8 @@
   (async () => {
     try {
       const session = await api('/api/admin/session', { allow401: true });
+      state.authMode = (session && session.mode) || 'password';
+      state.userEmail = (session && session.email) || '';
       state.authenticated = Boolean(session && session.authenticated);
       renderAuthState();
       if (state.authenticated) {

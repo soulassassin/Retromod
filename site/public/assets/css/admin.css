@@ -747,6 +747,27 @@
   min-width: 84px;
 }
 
+.adm-row-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.adm-delete {
+  min-width: 84px;
+  color: #b42318;
+}
+
+.adm-delete.btn--danger {
+  color: #fff;
+}
+
+tr.is-removing {
+  opacity: 0.4;
+  transition: opacity 160ms ease-out;
+}
+
 .btn--danger {
   background: #b42318;
   border-color: #b42318;

@@ -23,7 +23,7 @@
     </div>
     <div class="hdr-right">
       <a class="btn btn--ghost" href="shop.html">Storefront <span class="arr" aria-hidden="true">↗</span></a>
-      <span class="adm-session-pill" id="sessionBadge" hidden><i class="dot dot--live" aria-hidden="true"></i> Signed in</span>
+      <span class="adm-session-pill" id="sessionBadge" hidden><i class="dot dot--live" aria-hidden="true"></i> <span id="sessionLabel">Signed in</span></span>
       <button class="btn" type="button" id="logoutBtn" hidden>Log out</button>
     </div>
   </div>
@@ -35,10 +35,14 @@
     <div class="adm-login-card">
       <span class="eyebrow">Restricted · Norwood Studio</span>
       <h1 class="display adm-login-title" id="loginTitle">Admin Console.</h1>
-      <p class="muted adm-login-copy">Sign in to manage floor inventory, run assisted @retromod.za stock imports, and update customer orders.</p>
+      <p class="muted adm-login-copy">Sign in to manage stock, import pieces straight from @retromod.za Instagram links, and update customer orders.</p>
       <form id="loginForm" class="adm-login-form" novalidate>
+        <div class="field" id="emailField" hidden>
+          <label for="adminEmail">Email</label>
+          <input class="input" id="adminEmail" name="email" type="email" autocomplete="username" inputmode="email" aria-label="Email">
+        </div>
         <div class="field">
-          <label for="adminPassword">Admin password</label>
+          <label for="adminPassword" id="adminPasswordLabel">Admin password</label>
           <input class="input" id="adminPassword" name="password" type="password" autocomplete="current-password" required aria-label="Admin password">
         </div>
         <div id="loginError" class="adm-alert" role="alert" aria-live="assertive" hidden></div>
@@ -107,7 +111,7 @@
               <th>Price (ZAR)</th>
               <th>Qty</th>
               <th>Status</th>
-              <th>Action</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody id="inventoryBody"></tbody>
