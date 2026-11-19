@@ -12,6 +12,7 @@
     "test": "npm run test:unit",
     "db:migrate": "node scripts/supabase-admin.js migrate",
     "staff:add": "node scripts/supabase-admin.js add-staff",
+    "staff:password": "node scripts/supabase-admin.js set-password",
     "staff:remove": "node scripts/supabase-admin.js remove-staff",
     "staff:list": "node scripts/supabase-admin.js list-staff"
   },

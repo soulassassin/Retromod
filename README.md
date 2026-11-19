@@ -69,6 +69,7 @@ Staff accounts use Supabase Auth, and only emails on the `staff` allowlist can o
 ```bash
 npm run staff:add -- name@example.com     # prompts for a password (min 10 chars)
 npm run staff:list
+npm run staff:password -- name@example.com   # reset a password (asks twice, then tests it)
 npm run staff:remove -- name@example.com
 ```
 

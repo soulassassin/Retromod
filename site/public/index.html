@@ -1883,7 +1883,14 @@
       let items = [], slides = [], rows = [], cur = -1, elapsed = 0, hovering = false, heroVisible = true, tickStarted = false;
 
       function renderHeroShowcase() {
-        const prods = D.products.filter(p => !isSold(p));
+        // Only the 5 newest available pieces (by date added); the rest live on the shop page.
+        const HERO_MAX = 5;
+        const prods = D.products
+          .map((p, i) => ({ p, i }))
+          .filter(({ p }) => !isSold(p))
+          .sort((a, b) => String(b.p.added || '').localeCompare(String(a.p.added || '')) || a.i - b.i)
+          .slice(0, HERO_MAX)
+          .map(({ p }) => p);
         items = prods.map(p => ({
           src: img(p), title: short(p), alt: p.title, price: fmt(p.price), href: `product.html?id=${encodeURIComponent(p.id)}`,
           chip: [CAT[p.category], (p.era || '').replace(/^Circa /i, 'c.')].filter(Boolean).join(' · ')

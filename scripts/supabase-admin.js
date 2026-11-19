@@ -8,7 +8,8 @@
 //                                                           that already exist, so it is safe to re-run.
 //   node scripts/supabase-admin.js add-staff <email>        Create a staff login (prompts for a password,
 //                                                           or reads RETROMOD_STAFF_PASSWORD).
-//   node scripts/supabase-admin.js remove-staff <email>     Revoke stock-manager access and delete the login.
+//   node scripts/supabase-admin.js set-password <email>     Reset a staff password (asks twice, then test-signs-in).
+//   node scripts/supabase-admin.js remove-staff <email>    Revoke stock-manager access and delete the login.
 //   node scripts/supabase-admin.js list-staff               Show who has access.
 
 const fs = require('fs');
@@ -70,19 +71,68 @@ async function migrate(client) {
   console.log(`  Skipped ${existingProducts.size} products / ${existingOrders.size} orders already in Supabase.\n`);
 }
 
+// Reads a password showing one * per character. Handles backspace, Ctrl+C and Windows \r\n.
 function askHidden(question) {
-  return new Promise(resolve => {
-    const rl = readline.createInterface({ input: process.stdin, output: process.stdout, terminal: true });
-    rl.stdoutMuted = true;
-    rl._writeToOutput = function write(str) {
-      if (!rl.stdoutMuted || str.includes(question)) rl.output.write(str);
-    };
-    rl.question(question, answer => {
-      rl.close();
-      process.stdout.write('\n');
-      resolve(answer);
+  const stdin = process.stdin;
+  if (!stdin.isTTY) {
+    // Not an interactive terminal: read a plain line.
+    return new Promise(resolve => {
+      const rl = readline.createInterface({ input: stdin, output: process.stdout, terminal: false });
+      process.stdout.write(question);
+      rl.once('line', line => { rl.close(); resolve(line.replace(/\r$/, '')); });
     });
+  }
+  return new Promise(resolve => {
+    let value = '';
+    process.stdout.write(question);
+    stdin.setRawMode(true);
+    stdin.resume();
+    stdin.setEncoding('utf8');
+    const onData = chunk => {
+      for (const ch of chunk) {
+        if (ch === '\r' || ch === '\n') {
+          stdin.setRawMode(false);
+          stdin.pause();
+          stdin.removeListener('data', onData);
+          process.stdout.write('\n');
+          resolve(value);
+          return;
+        }
+        if (ch === '\u0003') { process.stdout.write('\n'); process.exit(130); }
+        if (ch === '\u0008' || ch === '\u007f') {
+          if (value.length) { value = value.slice(0, -1); process.stdout.write('\b \b'); }
+          continue;
+        }
+        if (ch < ' ') continue; // ignore other control keys
+        value += ch;
+        process.stdout.write('*');
+      }
+    };
+    stdin.on('data', onData);
   });
+}
+
+async function askNewPassword(email) {
+  if (process.env.RETROMOD_STAFF_PASSWORD) return process.env.RETROMOD_STAFF_PASSWORD;
+  const first = await askHidden(`  New password for ${email} (min 10 chars): `);
+  if (!first || first.length < 10) fail('Password must be at least 10 characters.');
+  const second = await askHidden('  Type it again to confirm: ');
+  if (first !== second) fail('The two passwords did not match. Nothing was changed - please try again.');
+  return first;
+}
+
+// Signs in exactly like the /admin page does, to prove the password works.
+async function verifyLogin(config, email, password) {
+  const res = await fetch(`${config.url}/auth/v1/token?grant_type=password`, {
+    method: 'POST',
+    headers: { apikey: config.anonKey || config.serviceKey, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password })
+  });
+  if (res.ok) {
+    console.log(`  Checked: ${email} can sign in with this password.`);
+  } else {
+    console.log(`  Warning: test sign-in failed (${res.status}). Run staff:password again.`);
+  }
 }
 
 async function findUserByEmail(client, email) {
@@ -96,18 +146,30 @@ async function findUserByEmail(client, email) {
   return null;
 }
 
-async function addStaff(client, emailArg) {
+async function setPassword(client, config, emailArg) {
+  const email = String(emailArg || '').trim().toLowerCase();
+  if (!email) fail('Usage: set-password <email>');
+  const user = await findUserByEmail(client, email);
+  if (!user) fail(`No login found for ${email}. Create it with: npm run staff:add -- ${email}`);
+  const password = await askNewPassword(email);
+  await client.request('PUT', `/auth/v1/admin/users/${user.id}`, { body: { password } });
+  console.log(`  Password updated for ${email}`);
+  await verifyLogin(config, email, password);
+  console.log('');
+}
+
+async function addStaff(client, config, emailArg) {
   const email = String(emailArg || '').trim().toLowerCase();
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) fail('Usage: add-staff <email>');
 
   let user = await findUserByEmail(client, email);
   if (!user) {
-    const password = process.env.RETROMOD_STAFF_PASSWORD || await askHidden(`  Password for ${email} (min 10 chars): `);
-    if (!password || password.length < 10) fail('Password must be at least 10 characters.');
+    const password = await askNewPassword(email);
     user = await client.request('POST', '/auth/v1/admin/users', {
       body: { email, password, email_confirm: true }
     });
     console.log(`  Created login for ${email}`);
+    await verifyLogin(config, email, password);
   } else {
     console.log(`  ${email} already has a login; granting access.`);
   }
@@ -148,11 +210,12 @@ async function main() {
 
   switch (cmd) {
     case 'migrate': return migrate(client);
-    case 'add-staff': return addStaff(client, arg);
+    case 'add-staff': return addStaff(client, config, arg);
+    case 'set-password': return setPassword(client, config, arg);
     case 'remove-staff': return removeStaff(client, arg);
     case 'list-staff': return listStaff(client);
     default:
-      fail('Commands: migrate | add-staff <email> | remove-staff <email> | list-staff');
+      fail('Commands: migrate | add-staff <email> | set-password <email> | remove-staff <email> | list-staff');
   }
 }
 
